@@ -1,8 +1,8 @@
 
 #include "../Logger/StaticLogger.h"
+#include "../JSON Serializer/JsonSerializer.h"
 
 int main()
 {
-	StaticLogger::instance.trace("Test");
 	return 0;
 }

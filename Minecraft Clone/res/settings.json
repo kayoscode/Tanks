@@ -1,0 +1,11 @@
+{
+    "window": {
+        "width": 1920,
+        "height": 1080,
+        "xpos": 0,
+        "ypos": 0,
+        "title": "Game Window",
+        "fullscreen": "false",
+        "center": "true"
+    }
+}

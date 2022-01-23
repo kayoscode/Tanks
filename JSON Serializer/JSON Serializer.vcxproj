@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{ba65923f-be84-4883-835a-5524a95fd792}</ProjectGuid>
+    <ProjectGuid>{2ae8371b-456d-4b56-94c1-b75f104718fb}</ProjectGuid>
     <RootNamespace>JSONSerializer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -46,7 +46,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -139,6 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="JsonFile.cpp" />
+    <ClCompile Include="JsonLexer.cpp" />
+    <ClCompile Include="JsonNode.cpp" />
+    <ClCompile Include="JsonParser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JsonFile.h" />
+    <ClInclude Include="JsonLexer.h" />
+    <ClInclude Include="JsonNode.h" />
+    <ClInclude Include="JsonParser.h" />
+    <ClInclude Include="JsonSerializer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
