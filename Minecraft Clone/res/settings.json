@@ -4,8 +4,9 @@
         "height": 1080,
         "xpos": 0,
         "ypos": 0,
-        "title": "Game Window",
+        "title": "Minecraft",
         "fullscreen": "false",
-        "center": "true"
+        "center": "true",
+		"vsync": "true"
     }
 }
