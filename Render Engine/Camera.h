@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Math/Math.h"
+#include "Entity.h"
 
 /**
  * Class representing a camera
@@ -8,9 +9,11 @@
  * projection and view matrix which are ultimately what renders the scene
  * @author Bryce Young 5/30/2021
  * */
-class Camera {
+class Camera : public Entity
+{
     public:
         Camera() :
+            Entity("Camera"),
             projectionMatrix(),
             viewMatrix(),
             aspectRatio(0)
@@ -57,20 +60,12 @@ class Camera {
  * */
 class Camera3D : public Camera {
     public:
-        inline Vector3f& getPosition() {
-            return pos;
-        }
-
-        inline Quaternionf& getRotation(){
-            return rotation;
-        }
-
         /// <summary>
         /// Calculates the view matrix from a rotation and position.
         /// </summary>
         void calculateViewMatrix() {
-            viewMatrix = rotation.toMatrix();
-            viewMatrix.translate(pos);
+            viewMatrix = mTransform->Rotation.toMatrix();
+            viewMatrix.translate(mTransform->Position);
             viewMatrix.invert();
         }
 
@@ -99,6 +94,4 @@ class Camera3D : public Camera {
         float fov;
         float zNear;
         float zFar;
-        Vector3f pos;
-        Quaternionf rotation;
 };

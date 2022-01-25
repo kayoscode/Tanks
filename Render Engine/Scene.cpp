@@ -2,10 +2,11 @@
 
 void Scene::render()
 {
-	mRenderPipeline->render();
+	mRenderPipeline->render(*this);
 }
 
 void Scene::init()
 {
-	mRenderPipeline->init();
+	this->onInit();
+	mRenderPipeline->init(*this);
 }

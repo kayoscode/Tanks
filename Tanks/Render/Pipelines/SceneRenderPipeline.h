@@ -5,6 +5,7 @@
 #include "Render Engine/Mesh.h"
 #include "Render Engine/Texture.h"
 #include "Render Engine/Camera.h"
+#include "Render Engine/Scene.h"
 
 #include "Tanks/Render/Shaders/ModelShader.h"
 
@@ -15,24 +16,22 @@
 class RenderMainScene : public RenderPipelineStage
 {
 public:
-	void init();
+	void init(Scene& scene);
 
 protected:
-	void prepare();
-	void execute();
+	void prepare(Scene& scene);
+	void execute(Scene& scene);
 
 private:
-	ModelShader* modelShader;
-	Mesh* cubeMesh;
-	Texture* brickTexture;
-	Camera3D camera;
+	ModelShader* mModelShader;
+	Camera3D* mCamera;
 };
 
 class RenderMainScenePipeline : public RenderPipeline
 {
 public:
-	void init();
-	void render();
+	void init(Scene& scene);
+	void render(Scene& scene);
 
 private:
 	RenderMainScene mMainSceneRender;

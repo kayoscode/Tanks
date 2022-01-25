@@ -1,9 +1,11 @@
 #pragma once
 
-#include "RenderPipeline.h"
 #include <memory>
+#include <vector>
 
-class RenderPipeline;
+#include "RenderPipeline.h"
+#include "Render Engine/Camera.h"
+#include "Render Engine/Entity.h"
 
 /// <summary>
 /// Class representing a scene. Contains a render pipeline along with all entities 
@@ -19,6 +21,16 @@ public:
 	Scene(std::unique_ptr<RenderPipeline> renderPipeline) 
 	{
 		this->mRenderPipeline = std::move(renderPipeline);
+		mCamera = nullptr;
+	}
+
+	/// <summary>
+	/// Add entity gives ownership of the entity to this class.
+	/// </summary>
+	/// <param name="entity"></param>
+	void addRenderableEntity(std::unique_ptr<RenderableEntity> entity)
+	{
+		mEntities.push_back(std::move(entity));
 	}
 
 	virtual void init();
@@ -26,8 +38,38 @@ public:
 
 	virtual ~Scene() {}
 
+	/// <summary>
+	/// Returns the camera as a mutable object.
+	/// </summary>
+	/// <returns></returns>
+	Camera* getCamera() 
+	{
+		return mCamera.get();
+	}
+
+	/// <summary>
+	/// Returns the list of entities.
+	/// </summary>
+	/// <returns></returns>
+	std::vector<std::unique_ptr<RenderableEntity>>::iterator getEntitiesIteratorStart()
+	{
+		return mEntities.begin();
+	}
+
+	/// <summary>
+	/// Returns the end of the list of entities
+	/// </summary>
+	/// <returns></returns>
+	std::vector<std::unique_ptr<RenderableEntity>>::iterator getEntitiesIteratorEnd()
+	{
+		return mEntities.end();
+	}
+
 protected:
-private:
+	virtual void onInit() = 0;
+
 	std::unique_ptr<RenderPipeline> mRenderPipeline;
+	std::unique_ptr<Camera> mCamera;
+	std::vector<std::unique_ptr<RenderableEntity>> mEntities;
 };
 

@@ -35,12 +35,6 @@ GameWindow* GameManager::mMainWindow = nullptr;
 std::thread GameManager::mMainWindowRenderThread;
 std::unique_ptr<Scene> GameManager::mScene = nullptr;
 
-void GameManager::mainWindowRenderThread()
-{
-    mMainWindow->setAsCurrent();
-    executeRenderLoop();
-}
-
 GameManager::constructor::constructor() 
 {
     initializePlatform();
@@ -74,9 +68,9 @@ void GameManager::createWindow(const WindowConfig& windowConfig)
         }
     }
 
-    // Spawn the render thread and move gl context.
+    // Spawn the render thread and move GL context to new thread.
     glfwMakeContextCurrent(nullptr);
-    mMainWindowRenderThread = std::thread(mainWindowRenderThread);
+    mMainWindowRenderThread = std::thread(executeRenderLoop);
     mMainWindowRenderThread.detach();
 }
 
@@ -221,6 +215,8 @@ void GameManager::executeInputLoop()
 
 void GameManager::executeRenderLoop() 
 {
+    mMainWindow->setAsCurrent();
+    glClearColor(.0f, 1, 1, 1);
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
 

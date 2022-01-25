@@ -105,13 +105,6 @@ public:
 		bool vSync;
 	};
 
-	/**
-	 * Performs the gameloop until the user chooses to end the program
-	 * or the program closes
-	 * @param windowConfig the initial window configuration
-	 * */
-	static void executeRenderLoop();
-
 	/// <summary>
 	/// Collects input on the window.
 	/// Should be handled from the main thread.
@@ -184,6 +177,11 @@ public:
 		mScene = std::move(scene);
 	}
 
+	static Scene* getScene()
+	{
+		return mScene.get();
+	}
+
 	/// <summary>
 	/// Returns the program runtime.
 	/// </summary>
@@ -193,6 +191,13 @@ public:
 	static GameResources Resources;
 
 private:
+	/**
+	 * Performs the gameloop until the user chooses to end the program
+	 * or the program closes
+	 * @param windowConfig the initial window configuration
+	 * */
+	static void executeRenderLoop();
+
 	/// <summary>
 	/// Initializes the engine with platform information and other init necessities.
 	/// </summary>
@@ -208,7 +213,6 @@ private:
 	/// </summary>
 	static GameWindow* mMainWindow;
 	static std::thread mMainWindowRenderThread;
-	static void mainWindowRenderThread();
 
 	static std::string resFolder;
 	static Platform platform;

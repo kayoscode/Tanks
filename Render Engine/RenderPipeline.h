@@ -1,5 +1,7 @@
 #pragma once
 
+class Scene;
+
 /// <summary>
 /// Represents a stage in the render pipeline.
 /// Examples: render scene, post processing, render GUI.
@@ -15,28 +17,28 @@ public:
 	/// <summary>
 	/// Renders this stage.
 	/// </summary>
-	void render()
+	void render(Scene& scene)
 	{
-		prepare();
-		execute();
+		prepare(scene);
+		execute(scene);
 	}
 
 	/// <summary>
 	/// Called to initialize any member variables or resources at load time.
 	/// </summary>
-	virtual void init() = 0;
+	virtual void init(Scene& scene) = 0;
 
 protected:
 
 	/// <summary>
 	/// Renders this stage of the pipeline. The output is a framebuffer (TODO).
 	/// </summary>
-	virtual void execute() = 0;
+	virtual void execute(Scene& scene) = 0;
 
 	/// <summary>
 	/// Prepares the pipeline stage for render.
 	/// </summary>
-	virtual void prepare() = 0;
+	virtual void prepare(Scene& scene) = 0;
 
 private:
 };
@@ -53,12 +55,12 @@ public:
 	/// <summary>
 	/// Inits all render pipeline stages.
 	/// </summary>
-	virtual void init() = 0;
+	virtual void init(Scene& scene) = 0;
 
 	/// <summary>
 	/// Renders the pipeline to the currently bound framebuffer.
 	/// </summary>
-	virtual void render() = 0;
+	virtual void render(Scene& scene) = 0;
 
 protected:
 private:

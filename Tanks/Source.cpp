@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Engine/GameManager.h"
+#include "GameScene.h"
 #include "Logger/StaticLogger.h"
 #include "Serializers/OBJ Serializer/ModelLoader.h"
 #include "Render/Shaders/ModelShader.h"
@@ -10,14 +11,7 @@
 int main()
 {
 	GameManager::setResPath("res/");
-
-	// Create and set scene.
-	std::unique_ptr<RenderPipeline> mainSceneRenderPipeline =
-		std::make_unique<RenderMainScenePipeline>();
-
-	std::unique_ptr<Scene> mainScene = std::make_unique<Scene>(std::move(mainSceneRenderPipeline));
-	GameManager::setScene(std::move(mainScene));
-
+	GameManager::setScene(std::make_unique<GameScene>());
 	GameManager::createWindow(GameManager::resPath() + "settings.json");
 
 	GameManager::executeInputLoop();

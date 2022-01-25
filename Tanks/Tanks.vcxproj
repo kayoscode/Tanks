@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Render\Pipelines\SceneRenderPipeline.cpp" />
     <ClCompile Include="Render\Shaders\GUIShader.cpp" />
     <ClCompile Include="Render\Shaders\ModelShader.cpp" />
@@ -182,6 +183,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Render\Pipelines\SceneRenderPipeline.h" />
     <ClInclude Include="Render\Shaders\GUIShader.h" />
     <ClInclude Include="Render\Shaders\ModelShader.h" />

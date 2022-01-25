@@ -7,81 +7,50 @@
 
 #include "Serializers/OBJ Serializer/ModelLoader.h"
 
-void RenderMainScene::init()
+void RenderMainScene::init(Scene& scene)
 {
-    // Load the brick texture.
-    std::unique_ptr<Texture> texture = std::make_unique<Texture>();
-    texture->loadFromFile(GameManager::resPath() + "textures/Bricks.png");
-    GameManager::Resources.TextureResources.addRegistry("Bricks", std::move(texture));
-
-    // Load the model shader.
-    std::unique_ptr<ShaderProgram> shader = std::make_unique<ModelShader>();
-    GameManager::Resources.ShaderResources.addRegistry("Model", std::move(shader));
-
-	// Load model.
-    IndexedModel model;
-    ModelLoader::loadOBJ(GameManager::resPath() + "models/cube.obj", model);
-    std::unique_ptr<IndexedMesh> mesh = std::make_unique<IndexedMesh>();
-
-	mesh->setIndices(model.indices, model.indexCount);
-	mesh->addFloatData(model.positions, model.positionsCount, 3);
-	mesh->addFloatData(model.uvs, model.uvsCount, 2);
-	mesh->addFloatData(model.normals, model.normalsCount, 3);
-	GameManager::Resources.MeshResources.addRegistry("Cube", std::move(mesh));
+	mCamera = (Camera3D*)scene.getCamera();
+	mCamera->createProjectionMatrix(1.0f,
+		GameManager::getGameWindow()->getAspectRatio(),
+		.01f, 1000);
 
 	// Load resources.
-	modelShader = static_cast<ModelShader*>(GameManager::Resources.
+	mModelShader = static_cast<ModelShader*>(GameManager::Resources.
 		ShaderResources.getRegistry("Model"));
 
-	cubeMesh = GameManager::Resources.MeshResources.getRegistry("Cube");
-
-	brickTexture = GameManager::Resources.TextureResources.getRegistry("Bricks");
-
-	camera.createProjectionMatrix(1.0f, GameManager::getGameWindow()->getAspectRatio(),
-		.01, 1000);
-	camera.getPosition() = Vector3f(0, 0, 5);
-	camera.getRotation().lookRotation(Vector3f(0, 0, 1), Vector3f(0, 1, 0));
-	camera.calculateViewMatrix();
-
-	modelShader->bind();
-	modelShader->loadCameraProjection(camera.getProjection());
-	modelShader->loadCamera(camera.getViewMatrix());
-	modelShader->loadDiffuseTexture(0);
+	mModelShader->bind();
+	mModelShader->loadDiffuseTexture(0);
+	mModelShader->loadCameraProjection(mCamera->getProjection());
 }
 
-void RenderMainScene::prepare()
+void RenderMainScene::prepare(Scene& scene)
 {
-	modelShader->bind();
+	mModelShader->bind();
 }
 
-float rot = 0;
-void RenderMainScene::execute()
+void RenderMainScene::execute(Scene& scene)
 {
-	rot += GameManager::getDeltaTime();
+	mCamera->getTransform()->Position = Vector3f(0, 0, 5);
+	mCamera->calculateViewMatrix();
 
-	Quaternionf rotation;
-	rotation.rotate(Vector3f(0, 1, 0).normalize(), rot).normalize();
+	mModelShader->loadLightPosition(Vector3f(0, 0, 5));
+	mModelShader->loadCamera(scene.getCamera()->getViewMatrix());
 
-	Matrix44f transformationMatrix;
-	Matrix44f translation;
-	Matrix44f scale;
-
-	translation.translate(Vector3f(0, 0, -3));
-	scale.scale(Vector3f(1, 1, 1));
-
-	transformationMatrix = translation * rotation.toMatrix() * scale;
-	modelShader->loadLightPosition(Vector3f(0, 0, 5));
-	modelShader->loadModelMatrix(transformationMatrix);
-
-	cubeMesh->render();
+	// Render each entity.
+	for (auto entity = scene.getEntitiesIteratorStart(); entity != scene.getEntitiesIteratorEnd(); ++entity)
+	{
+		entity->get()->update();
+		mModelShader->loadModelMatrix(entity->get()->getTransform()->getTransformationMatrix());
+		entity->get()->getMesh()->render();
+	}
 }
 
-void RenderMainScenePipeline::init()
+void RenderMainScenePipeline::init(Scene& scene)
 {
-	mMainSceneRender.init();
+	mMainSceneRender.init(scene);
 }
 
-void RenderMainScenePipeline::render()
+void RenderMainScenePipeline::render(Scene& scene)
 {
-	mMainSceneRender.render();
+	mMainSceneRender.render(scene);
 }

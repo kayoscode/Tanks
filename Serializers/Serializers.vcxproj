@@ -25,7 +25,6 @@
     <ClCompile Include="JSON Serializer\JsonParser.cpp" />
     <ClCompile Include="OBJ Serializer\OBJLoader.cpp" />
     <ClCompile Include="STB_image\ImageLoader.cpp" />
-    <ClCompile Include="STB_image\stb_image.c" />
     <ClCompile Include="XML Serializer\XMLFile.cpp" />
     <ClCompile Include="XML Serializer\XMLLexer.cpp" />
     <ClCompile Include="XML Serializer\XMLNode.cpp" />

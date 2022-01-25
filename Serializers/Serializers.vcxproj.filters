@@ -60,11 +60,8 @@
     <ClCompile Include="STB_image\ImageLoader.cpp">
       <Filter>STB_image</Filter>
     </ClCompile>
-    <ClCompile Include="STB_image\stb_image.c">
-      <Filter>STB_image</Filter>
-    </ClCompile>
     <ClCompile Include="OBJ Serializer\OBJLoader.cpp">
-      <Filter>OBJ Serializer</Filter>
+      <Filter>OBJ Serializer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

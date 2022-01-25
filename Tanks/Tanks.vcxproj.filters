@@ -11,6 +11,9 @@
     <ClCompile Include="Render\Pipelines\SceneRenderPipeline.cpp">
       <Filter>Render\Pipeline</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Render\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render\Shaders\GUIShader.h">
@@ -25,6 +28,9 @@
     <ClInclude Include="TextShader.h">
       <Filter>Render\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Render\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
@@ -35,6 +41,9 @@
     </Filter>
     <Filter Include="Render\Shader">
       <UniqueIdentifier>{9a5f54ac-8aa0-407e-81f7-6fdb81349f0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Scenes">
+      <UniqueIdentifier>{1d0f551e-6e81-4596-8772-ddbdc6e1acea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
