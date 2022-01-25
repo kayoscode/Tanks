@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -170,15 +170,6 @@
     <ProjectReference Include="..\AudioLib\AudioLib.vcxproj">
       <Project>{8e9f03c2-40bb-46bb-b625-cc8132d32458}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CSV Serializer\CSV Serializer.vcxproj">
-      <Project>{57bfc7e6-902d-4cd0-baeb-af84114d9e07}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Graphics\Graphics.vcxproj">
-      <Project>{6bdf72ab-e6ba-412f-ab0a-0cc28b5bb8df}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\JSON Serializer\JSON Serializer.vcxproj">
-      <Project>{2ae8371b-456d-4b56-94c1-b75f104718fb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.vcxproj">
       <Project>{210c6470-1940-49e2-ba26-9e430e58841e}</Project>
     </ProjectReference>
@@ -188,15 +179,17 @@
     <ProjectReference Include="..\ScriptEngine\ScriptEngine.vcxproj">
       <Project>{9e853ddd-2025-4e2f-9306-e64653dc3f3a}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\XML Serializer\XML Serializer.vcxproj">
-      <Project>{cab319fe-5d61-43c0-b68d-7a8a64eb44e1}</Project>
+    <ProjectReference Include="..\Serializers\Serializers.vcxproj">
+      <Project>{3d37b536-91f3-4d7c-8f58-ae4cc2824a01}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameManager.cpp" />

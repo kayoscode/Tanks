@@ -29,16 +29,8 @@ static void skipWhiteSpace(char* json, uint32_t& index, uint32_t size) {
     }
 }
 
-static bool isAlpha(char ch) {
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
-}
-
 static bool isNum(char ch) {
     return ch >= '0' && ch <= '9';
-}
-
-static bool isAlphaNum(char ch) {
-    return isAlpha(ch) || isNum(ch);
 }
 
 static bool isStrStart(char ch) {

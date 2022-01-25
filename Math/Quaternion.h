@@ -5,7 +5,7 @@
 #include "Vector4.h"
 #include "Matrix44.h"
 
-#include "math.h"
+#include <cmath>
 
 #define MAX(a, b) ((a) > (b))? (a) : (b)
 

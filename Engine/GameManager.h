@@ -5,8 +5,36 @@
 
 #include "../lib/glew/include/GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "GameWindow.h"
 #include "../Utils/Timer.h"
+#include "GameWindow.h"
+#include "ResourceManager.h"
+
+#include "../Render Engine/Mesh.h"
+#include "../Render Engine/Texture.h"
+#include "../Render Engine/Shader.h"
+
+
+/// <summary>
+/// Class responsible for handling all game resources.
+/// </summary>
+class GameResources
+{
+public:
+	/// <summary>
+	/// Standard constructor.
+	/// </summary>
+	GameResources()
+		:TextureResources("Textures"),
+        ShaderResources("Shaders"),
+        MeshResources("Meshes")
+	{}
+
+	~GameResources() {}
+
+	ResourceManager<Texture> TextureResources;
+	ResourceManager<ShaderProgram> ShaderResources;
+	ResourceManager<Mesh> MeshResources;
+};
 
 /**
  * All units of time.
@@ -21,16 +49,16 @@ enum class TimeUnit {
 };
 
 /**
- * Supported operating systems
+ * Supported operating systems.
  * */
 enum class OperatingSystem {
     WINDOWS,
-    MAC,
+    MACOS_DARWIN,
     LINUX
 };
 
 /**
- * Holds information about the operating system
+ * Holds information about the operating system.
  * */
 struct Platform {
     public:
@@ -38,7 +66,7 @@ struct Platform {
 };
 
 /**
- * A class that handles all entities, updates, windows, rendering, time, etc
+ * A class that handles all entities, updates, windows, rendering, time, etc.
  * @author Bryce Young 5/27/2021
  * */
 class GameManager {
@@ -77,12 +105,6 @@ class GameManager {
          * @param windowConfig the initial window configuration
          * */
         static void executeGameLoop();
-
-        /**
-         * Should be called at the end of execution to free all system resources
-         * 
-         * */
-        static void cleanupResources();
 
         /**
          * Creates a window and initializes graphics
@@ -127,13 +149,14 @@ class GameManager {
          * Returns the elapsed time since last frame
          * */
         static float getDeltaTime() {
-            return time.getDelta();
+            return mTime.getDelta();
         }
 
         /**
          * Returns the program runtime
          * */
         static float getProgramRuntime(TimeUnit timeUnit);
+        static GameResources Resources;
 
     private:
         /// <summary>
@@ -169,7 +192,7 @@ class GameManager {
          * */
         class GameTime {
             public:
-                GameTime() : delta(0), elapsedNanosThisSecond(0), totalNanos(0) {
+                GameTime() : totalNanos(0), elapsedNanosThisSecond(0), delta(0) {
                 }
 
                 /**
@@ -250,5 +273,5 @@ class GameManager {
 			float delta;
 		};
 
-		static GameTime time;
+		static GameTime mTime;
 };

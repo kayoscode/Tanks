@@ -87,8 +87,8 @@ void mousescroll_callback(GLFWwindow* window, double x, double y) {
 
 GameWindow::GameWindow(int width, int height, int posx, int posy, bool centered, const std::string& title, int flags) 
     :window(nullptr),
-    windowName(title),
-    monitor(nullptr)
+    monitor(nullptr),
+    windowName(title)
 {
     if(createWindow(width, height, posx, posy, centered, flags & (int)WindowCreateFlags::WINDOW_FULL_SCREEN)) {
         glfwSetKeyCallback(window, key_callback);

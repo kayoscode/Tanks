@@ -890,6 +890,8 @@ class DebugLogger {
                             printFormattedString(output, value, capitalized, rightAligned, setSpaceCount);
                         }
                         break;
+                    default:
+                        break;
                 }
             }
         }

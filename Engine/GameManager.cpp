@@ -1,33 +1,42 @@
 #include "GameManager.h"
 
-#include "../JSON Serializer/JsonSerializer.h"
+#include "../Serializers/JSON Serializer/JsonSerializer.h"
 #include "../Logger/StaticLogger.h"
+#include "../Render Engine/Camera.h"
+#include "../Math/Math.h"
 
 #include <iostream>
 #include <sstream>
 
+// Set platform definitions.
+#if defined(_WIN32) || defined(_WIN64) || defined(WIN32) || defined(__WIN32)
+#define OS_WINDOWS
+#endif
+
+#if defined(__linux__)
+#define OS_LINUX
+#error Operating System Unsupported
+#endif
+
+#if defined(__APPLE__) || defined(__MACH__)
+#define OS_MAC
+#error Operating System Unsupported
+#endif
+
+#include <cassert>
+
 GameManager::constructor GameManager::cons;
 Platform GameManager::platform;
 GameWindow* GameManager::mainWindow = nullptr;
-std::thread* GameManager::updateLoop = nullptr;
 std::string GameManager::resFolder = "";
-GameManager::GameTime GameManager::time;
+GameManager::GameTime GameManager::mTime;
+GameResources GameManager::Resources;
 
 GameManager::constructor::constructor() {
     initializePlatform();
 }
 
 GameManager::constructor::~constructor() {
-    // Destroy the updateloop thread.
-    if(updateLoop != nullptr) {
-        updateLoop->join();
-        delete updateLoop;
-    }
-
-    delete mainWindow;
-}
-
-void GameManager::cleanupResources() {
 }
 
 void GameManager::createWindow(const WindowConfig& windowConfig) {
@@ -179,10 +188,9 @@ void GameManager::initializePlatform() {
     #endif
 
     #ifdef OS_MAC
-    GameManager::platform.os = OperatingSystem::MAC;
+    GameManager::platform.os = OperatingSystem::MACOS_DARWIN;
     #endif
 }
-#include "Keyboard.h"
 
 void GameManager::executeGameLoop() {
     glfwSwapInterval(1);
@@ -191,55 +199,62 @@ void GameManager::executeGameLoop() {
     init();
 
     // Right after init, start the gametime.
-    time.start();
+    mTime.start();
 
-    while(!mainWindow->isClosing()) {
+    while(!mainWindow->isClosing()) 
+    {
         render();
+
         mainWindow->swapBuffers();
         mainWindow->pollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Add a frame and output the FPS if applicable.
-        if(time.addFrame(1000000000)) {
-            StaticLogger::instance.trace("Frames per second: {d}", time.getFPS());
+        if(mTime.addFrame(1000000000)) 
+        {
+            StaticLogger::instance.trace("Frames per second: {int}", mTime.getFPS());
         }
     }
 
     StaticLogger::instance.trace("Closing window");
 }
 
-void GameManager::load() {
+void GameManager::load() 
+{
 }
 
-void GameManager::init() {
+void GameManager::init() 
+{
 }
 
-void GameManager::update(){
+void GameManager::update()
+{
 }
 
-void GameManager::render() {
+void GameManager::render() 
+{
 }
 
 //return program runtime given requested timeunit
 float GameManager::getProgramRuntime(TimeUnit unit) {
     switch(unit) {
         case TimeUnit::HOURS:
-            return time.getRuntimeHours();
+            return mTime.getRuntimeHours();
         break;
         case TimeUnit::MINUTES:
-            return time.getRuntimeMinutes();
+            return mTime.getRuntimeMinutes();
         break;
         case TimeUnit::SECONDS:
-            return time.getRuntimeSeconds();
+            return mTime.getRuntimeSeconds();
         break;
         case TimeUnit::MILLISECONDS:
-            return time.getRuntimeMillis();
+            return mTime.getRuntimeMillis();
         break;
         case TimeUnit::MICROSECONDS:
-            return time.getRuntimeMicros();
+            return mTime.getRuntimeMicros();
         break;
         case TimeUnit::NANOSECONDS:
-            return (float)time.getRuntimeNanoseconds();
+            return (float)mTime.getRuntimeNanoseconds();
         break;
     }
 

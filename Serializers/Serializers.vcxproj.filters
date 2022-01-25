@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Json Serializer">
+      <UniqueIdentifier>{29682f95-7eee-4f61-97a5-d02f98cfaafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML Serializer">
+      <UniqueIdentifier>{5cda968d-0e7a-49b3-b25c-2827be4b306b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML Serializer\Header Files">
+      <UniqueIdentifier>{cf06d31f-af40-4bc8-8521-750a4d73090b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML Serializer\Source Files">
+      <UniqueIdentifier>{7f1bea7c-239a-4411-929d-37e8a0785a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json Serializer\Header Files">
+      <UniqueIdentifier>{cdc41f35-d2df-4957-b6bc-a96bbdf19e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json Serializer\Source Files">
+      <UniqueIdentifier>{bd9bbe5b-755e-45be-8b64-d0d84800f59d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="STB_image">
+      <UniqueIdentifier>{0a5d8fb6-9e22-41e4-8c98-9f1b051a5f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OBJ Serializer">
+      <UniqueIdentifier>{8b9dbcb5-71c9-4b50-8d90-7f9a1760648e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OBJ Serializer\Header Files">
+      <UniqueIdentifier>{6af42452-2f8c-40b5-a8a7-3a51bf9465a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OBJ Serializer\Source Files">
+      <UniqueIdentifier>{0f14f53c-8138-472d-bd10-619eab3fc869}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="JSON Serializer\JsonFile.cpp">
+      <Filter>Json Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON Serializer\JsonLexer.cpp">
+      <Filter>Json Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON Serializer\JsonNode.cpp">
+      <Filter>Json Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON Serializer\JsonParser.cpp">
+      <Filter>Json Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML Serializer\XMLFile.cpp">
+      <Filter>XML Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML Serializer\XMLLexer.cpp">
+      <Filter>XML Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML Serializer\XMLNode.cpp">
+      <Filter>XML Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XML Serializer\XMLParser.cpp">
+      <Filter>XML Serializer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="STB_image\ImageLoader.cpp">
+      <Filter>STB_image</Filter>
+    </ClCompile>
+    <ClCompile Include="STB_image\stb_image.c">
+      <Filter>STB_image</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJ Serializer\OBJLoader.cpp">
+      <Filter>OBJ Serializer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JSON Serializer\JsonFile.h">
+      <Filter>Json Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON Serializer\JsonLexer.h">
+      <Filter>Json Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON Serializer\JsonNode.h">
+      <Filter>Json Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON Serializer\JsonParser.h">
+      <Filter>Json Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON Serializer\JsonSerializer.h">
+      <Filter>Json Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML Serializer\XMLFile.h">
+      <Filter>XML Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML Serializer\XMLLexer.h">
+      <Filter>XML Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML Serializer\XMLNode.h">
+      <Filter>XML Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML Serializer\XMLParser.h">
+      <Filter>XML Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XML Serializer\XMLSerializer.h">
+      <Filter>XML Serializer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="STB_image\ImageLoader.h">
+      <Filter>STB_image</Filter>
+    </ClInclude>
+    <ClInclude Include="STB_image\stb_image.h">
+      <Filter>STB_image</Filter>
+    </ClInclude>
+    <ClInclude Include="OBJ Serializer\ModelLoader.h">
+      <Filter>OBJ Serializer\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

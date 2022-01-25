@@ -30,13 +30,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -44,12 +44,12 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -121,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bryce\Desktop\Minecraft Clone;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Bryce\Desktop\Minecraft Clone;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,23 +150,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Render\Shaders\GUIShader.cpp" />
+    <ClCompile Include="Render\Shaders\ModelShader.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudioLib\AudioLib.vcxproj">
       <Project>{8e9f03c2-40bb-46bb-b625-cc8132d32458}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CSV Serializer\CSV Serializer.vcxproj">
-      <Project>{57bfc7e6-902d-4cd0-baeb-af84114d9e07}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
       <Project>{92cf3b55-5b70-48f7-af0a-0445a7532141}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Graphics\Graphics.vcxproj">
-      <Project>{6bdf72ab-e6ba-412f-ab0a-0cc28b5bb8df}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\JSON Serializer\JSON Serializer.vcxproj">
-      <Project>{2ae8371b-456d-4b56-94c1-b75f104718fb}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Logger\Logger.vcxproj">
       <Project>{210c6470-1940-49e2-ba26-9e430e58841e}</Project>
@@ -172,18 +167,26 @@
     <ProjectReference Include="..\Math\Math.vcxproj">
       <Project>{ed230649-c8e0-42c6-9d12-476c3d032ae5}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Render Engine\Render Engine.vcxproj">
+      <Project>{6bdf72ab-e6ba-412f-ab0a-0cc28b5bb8df}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ScriptEngine\ScriptEngine.vcxproj">
       <Project>{9e853ddd-2025-4e2f-9306-e64653dc3f3a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Serializers\Serializers.vcxproj">
+      <Project>{3d37b536-91f3-4d7c-8f58-ae4cc2824a01}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.vcxproj">
       <Project>{7960a9ec-bd36-4bc3-935a-61332fc4ca92}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\XML Serializer\XML Serializer.vcxproj">
-      <Project>{cab319fe-5d61-43c0-b68d-7a8a64eb44e1}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Render\Shaders\GUIShader.h" />
+    <ClInclude Include="Render\Shaders\ModelShader.h" />
+    <ClInclude Include="TextShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

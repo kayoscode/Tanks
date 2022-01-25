@@ -18,8 +18,8 @@ class JsonLexer {
     public:
         JsonLexer(char* jsonContents, uint32_t size) 
             :json(jsonContents),
-            size(size),
-            index(0)
+            index(0),
+            size(size)
         {
         }
 

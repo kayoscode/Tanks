@@ -3,4 +3,3 @@
 
 DebugLogger StaticLogger::instance;
 StaticLogger::constructor StaticLogger::staticConstructor;
-
