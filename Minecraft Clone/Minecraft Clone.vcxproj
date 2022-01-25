@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Render\Pipelines\SceneRenderPipeline.cpp" />
     <ClCompile Include="Render\Shaders\GUIShader.cpp" />
     <ClCompile Include="Render\Shaders\ModelShader.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -184,6 +185,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Render\Pipelines\SceneRenderPipeline.h" />
     <ClInclude Include="Render\Shaders\GUIShader.h" />
     <ClInclude Include="Render\Shaders\ModelShader.h" />
     <ClInclude Include="TextShader.h" />

@@ -15,7 +15,7 @@
 /// Textures, Meshes, ShaderPrograms
 /// <author>Bryce Young 1/24/2022</author>
 /// </summary>
-template<class T>
+template<typename T>
 class ResourceManager
 {
 public:
@@ -26,6 +26,11 @@ public:
 
 	~ResourceManager() {}
 
+	/// <summary>
+	/// Adds resource registry by name.
+	/// </summary>
+	/// <param name="name"></param>
+	/// <param name="registry"></param>
 	void addRegistry(const std::string& name, std::unique_ptr<T> registry)
 	{
 		if (mRegistries.find(name) == mRegistries.end())
@@ -39,6 +44,11 @@ public:
 		}
 	}
 
+	/// <summary>
+	/// Returns resource registry by name.
+	/// </summary>
+	/// <param name="name"></param>
+	/// <returns></returns>
 	T* getRegistry(const std::string& name)
 	{
 		std::map<std::string, std::unique_ptr<T>>::iterator value = mRegistries.find(name);

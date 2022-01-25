@@ -3,16 +3,17 @@
 #include <thread>
 #include <map>
 
-#include "../lib/glew/include/GL/glew.h"
+#include "lib/glew/include/GL/glew.h"
 #include "GLFW/glfw3.h"
-#include "../Utils/Timer.h"
-#include "GameWindow.h"
+#include "Utils/Timer.h"
+#include "Render Engine/Scene.h"
 #include "ResourceManager.h"
 
-#include "../Render Engine/Mesh.h"
-#include "../Render Engine/Texture.h"
-#include "../Render Engine/Shader.h"
+#include "Render Engine/Mesh.h"
+#include "Render Engine/Texture.h"
+#include "Render Engine/Shader.h"
 
+class GameWindow;
 
 /// <summary>
 /// Class responsible for handling all game resources.
@@ -39,7 +40,8 @@ public:
 /**
  * All units of time.
  * */
-enum class TimeUnit {
+enum class TimeUnit 
+{
     HOURS,
     MINUTES,
     SECONDS,
@@ -51,7 +53,8 @@ enum class TimeUnit {
 /**
  * Supported operating systems.
  * */
-enum class OperatingSystem {
+enum class OperatingSystem 
+{
     WINDOWS,
     MACOS_DARWIN,
     LINUX
@@ -60,218 +63,255 @@ enum class OperatingSystem {
 /**
  * Holds information about the operating system.
  * */
-struct Platform {
-    public:
-        OperatingSystem os;
+struct Platform 
+{
+public:
+	OperatingSystem os;
 };
 
 /**
  * A class that handles all entities, updates, windows, rendering, time, etc.
  * @author Bryce Young 5/27/2021
  * */
-class GameManager {
-    public:
-        /**
-         * sets the state of the window on startup
-         * @param width window width
-         * @param height window height
-         * @param gameName the name of the window
-         * @param fullscreen whether the game is in fullscreen or not
-         * */
-        struct WindowConfig {
-            WindowConfig(int width, int height, int posx = 0, int posy = 0, bool centered = true, const std::string& gameName = "Untitled", bool fullscreen = false, bool vSync = true) 
-                :width(width),
-                height(height),
-                xPos(posx),
-                yPos(posy),
-                centered(centered),
-                gameName(gameName),
-                fullscreen(fullscreen),
-                vSync(vSync)
-            {
-            }
+class GameManager 
+{
+public:
+	/**
+	 * sets the state of the window on startup
+	 * @param width window width
+	 * @param height window height
+	 * @param gameName the name of the window
+	 * @param fullscreen whether the game is in fullscreen or not
+	 * */
+	struct WindowConfig 
+	{
+		WindowConfig(int width, int height, int posx = 0, int posy = 0, bool centered = true, const std::string& gameName = "Untitled", bool fullscreen = false, bool vSync = true)
+			:width(width),
+			height(height),
+			xPos(posx),
+			yPos(posy),
+			centered(centered),
+			gameName(gameName),
+			fullscreen(fullscreen),
+			vSync(vSync)
+		{
+		}
 
-            int width, height;
-            int xPos, yPos;
-            bool centered;
-            std::string gameName;
-            bool fullscreen;
-            bool vSync;
-        };
+		int width, height;
+		int xPos, yPos;
+		bool centered;
+		std::string gameName;
+		bool fullscreen;
+		bool vSync;
+	};
 
-        /**
-         * Performs the gameloop until the user chooses to end the program
-         * or the program closes
-         * @param windowConfig the initial window configuration
-         * */
-        static void executeGameLoop();
+	/**
+	 * Performs the gameloop until the user chooses to end the program
+	 * or the program closes
+	 * @param windowConfig the initial window configuration
+	 * */
+	static void executeGameLoop();
 
-        /**
-         * Creates a window and initializes graphics
-         * @param settingsPath path to settings JSON
-         * */
-        static void createWindow(const std::string& settingsPath);
+	/**
+	 * Creates a window and initializes graphics
+	 * @param settingsPath path to settings JSON
+	 * */
+	static void createWindow(const std::string& settingsPath);
 
-        /**
-         * Creates a window based on a window config
-         * */
-        static void createWindow(const WindowConfig& windowConfig);
+	/**
+	 * Creates a window based on a window config
+	 * */
+	static void createWindow(const WindowConfig& windowConfig);
 
-        /**
-         * Closes the main window and terminates the program
-         * */
-        void closeProgram() {
-            mainWindow->close();
-        }
+	/// <summary>
+	/// Returns the window in which the game is being rendered.
+	/// </summary>
+	/// <returns></returns>
+	static GameWindow* getGameWindow()
+	{
+		return mMainWindow;
+	}
 
-        /**
-         * A constant for the location of the res folder
-         * */
-        static const std::string& resPath() {
-            return resFolder;
-        }
+	/**
+	 * Closes the main window and terminates the program
+	 * */
+	void closeProgram();
 
-        /**
-         * Sets the resFolder to @param resPath
-         * */
-        static void setResPath(const std::string& resPath) {
-            resFolder = resPath;
-        }
+	/**
+	 * A constant for the location of the res folder
+	 * */
+	static const std::string& resPath() 
+	{
+		return resFolder;
+	}
 
-        /**
-         * Returns info about the platform
-         * */
-        const static Platform& getPlatform() {
-            return platform;
-        }
+	/**
+	 * Sets the resFolder to @param resPath
+	 * */
+	static void setResPath(const std::string& resPath) 
+	{
+		resFolder = resPath;
+	}
 
-        /**
-         * Returns the elapsed time since last frame
-         * */
-        static float getDeltaTime() {
-            return mTime.getDelta();
-        }
+	/**
+	 * Returns info about the platform
+	 * */
+	const static Platform& getPlatform() 
+	{
+		return platform;
+	}
 
-        /**
-         * Returns the program runtime
-         * */
-        static float getProgramRuntime(TimeUnit timeUnit);
-        static GameResources Resources;
+	/**
+	 * Returns the elapsed time since last frame
+	 * */
+	static float getDeltaTime() 
+	{
+		return mTime.getDelta();
+	}
 
-    private:
-        /// <summary>
-        /// Initializes the engine with platform information and other init necessities.
-        /// </summary>
-        static void initializePlatform();
+	/// <summary>
+	/// Sets the current scene.
+	/// </summary>
+	/// <param name="scene"></param>
+	static void setScene(std::unique_ptr<Scene> scene)
+	{
+		mScene = std::move(scene);
+	}
 
-        static void load();
-        static void init();
-        static void update();
-        static void render();
+	/// <summary>
+	/// Returns the program runtime.
+	/// </summary>
+	/// <param name="timeUnit"></param>
+	/// <returns></returns>
+	static float getProgramRuntime(TimeUnit timeUnit);
+	static GameResources Resources;
 
-        static GameWindow* mainWindow;
-        static std::thread* updateLoop;
+private:
+	/// <summary>
+	/// Initializes the engine with platform information and other init necessities.
+	/// </summary>
+	static void initializePlatform();
 
-        static std::string resFolder;
-        static Platform platform;
+	static void load();
+	static void init();
+	static void update();
+	static void render();
 
-        //static constructor
-        friend class constructor;
+	static GameWindow* mMainWindow;
+	static std::thread* updateLoop;
 
-        class constructor {
-            public:
-                constructor();
-                ~constructor();
-        };
+	static std::string resFolder;
+	static Platform platform;
 
-        static GameManager::constructor cons;
+	// Static constructor.
+	friend class constructor;
 
-        /**
-         * Class to handle time within the engine
-         * @author Bryce Young 5/31/2021
-         * */
-        class GameTime {
-            public:
-                GameTime() : totalNanos(0), elapsedNanosThisSecond(0), delta(0) {
-                }
+	class constructor {
+	public:
+		constructor();
+		~constructor();
+	};
 
-                /**
-                 * Called after the user starts the gameloop
-                 * resets all timers
-                 * */
-                void start() {
-                    deltaTime.reset();
-                    totalNanos = 0;
-                    elapsedNanosThisSecond = 0;
-                }
+	static GameManager::constructor cons;
 
-                /**
-                 * Adds a frame. If there is a rollover in the FPS, the function returns true
-                 * */
-                inline bool addFrame(uint64_t rollOverRateNanos)
-				{
+	/**
+	 * Class to handle time within the engine
+	 * @author Bryce Young 5/31/2021
+	 * */
+	class GameTime 
+	{
+	public:
+		GameTime() : totalNanos(0), elapsedNanosThisSecond(0), delta(0) 
+		{
+		}
 
-					bool ret = false;
-					uint64_t elapsed = deltaTime.nanoseconds();
-					this->totalNanos += elapsed;
-					this->elapsedNanosThisSecond += elapsed;
-					this->frameCount++;
+		/**
+		 * Called after the user starts the gameloop
+		 * resets all timers
+		 * */
+		void start() 
+		{
+			deltaTime.reset();
+			totalNanos = 0;
+			elapsedNanosThisSecond = 0;
+		}
 
-					//check for elapsed time overflow
-					if (this->elapsedNanosThisSecond >= rollOverRateNanos) {
-						this->previousFPS = frameCount;
-						this->frameCount = 0;
-						this->elapsedNanosThisSecond = 0;
-						ret = true;
-					}
+		/**
+		 * Adds a frame. If there is a rollover in the FPS, the function returns true
+		 * */
+		inline bool addFrame(uint64_t rollOverRateNanos)
+		{
 
-					this->delta = elapsed / 1e9f;
+			bool ret = false;
+			uint64_t elapsed = deltaTime.nanoseconds();
+			this->totalNanos += elapsed;
+			this->elapsedNanosThisSecond += elapsed;
+			this->frameCount++;
 
-					deltaTime.reset();
-					return ret;
-				}
+			//check for elapsed time overflow
+			if (this->elapsedNanosThisSecond >= rollOverRateNanos) {
+				this->previousFPS = frameCount;
+				this->frameCount = 0;
+				this->elapsedNanosThisSecond = 0;
+				ret = true;
+			}
 
-				inline float getRuntimeHours() {
-					return totalNanos / 3.6e12f;
-				}
+			this->delta = elapsed / 1e9f;
 
-				inline float getRuntimeMinutes() {
-					return totalNanos / 6e10f;
-				}
+			deltaTime.reset();
+			return ret;
+		}
 
-				inline float getRuntimeSeconds() {
-					return totalNanos / 1e9f;
-				}
+		inline float getRuntimeHours() 
+		{
+			return totalNanos / 3.6e12f;
+		}
 
-				inline float getRuntimeMillis() {
-					return totalNanos / 1e6f;
-				}
+		inline float getRuntimeMinutes() 
+		{
+			return totalNanos / 6e10f;
+		}
 
-				inline float getRuntimeMicros() {
-					return totalNanos / 1000.0f;
-				}
+		inline float getRuntimeSeconds() 
+		{
+			return totalNanos / 1e9f;
+		}
 
-				inline uint64_t getRuntimeNanoseconds() {
-					return totalNanos;
-				}
+		inline float getRuntimeMillis() 
+		{
+			return totalNanos / 1e6f;
+		}
 
-				inline uint32_t getFPS() {
-					return previousFPS;
-				}
+		inline float getRuntimeMicros() 
+		{
+			return totalNanos / 1000.0f;
+		}
 
-				inline float getDelta() {
-					return delta;
-				}
+		inline uint64_t getRuntimeNanoseconds() 
+		{
+			return totalNanos;
+		}
 
-		private:
-			Timer deltaTime;
+		inline uint32_t getFPS() 
+		{
+			return previousFPS;
+		}
 
-			uint64_t totalNanos;
-			uint64_t elapsedNanosThisSecond;
-			int frameCount = 0;
-			int previousFPS = 0;
-			float delta;
-		};
+		inline float getDelta() 
+		{
+			return delta;
+		}
 
-		static GameTime mTime;
+	private:
+		Timer deltaTime;
+
+		uint64_t totalNanos;
+		uint64_t elapsedNanosThisSecond;
+		int frameCount = 0;
+		int previousFPS = 0;
+		float delta;
+	};
+
+	static GameTime mTime;
+	static std::unique_ptr<Scene> mScene;
 };

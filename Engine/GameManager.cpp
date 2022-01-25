@@ -1,9 +1,11 @@
 #include "GameManager.h"
 
-#include "../Serializers/JSON Serializer/JsonSerializer.h"
-#include "../Logger/StaticLogger.h"
-#include "../Render Engine/Camera.h"
-#include "../Math/Math.h"
+#include "Serializers/JSON Serializer/JsonSerializer.h"
+#include "Logger/StaticLogger.h"
+#include "Render Engine/Camera.h"
+#include "Math/Math.h"
+
+#include "GameWindow.h"
 
 #include <iostream>
 #include <sstream>
@@ -27,10 +29,12 @@
 
 GameManager::constructor GameManager::cons;
 Platform GameManager::platform;
-GameWindow* GameManager::mainWindow = nullptr;
 std::string GameManager::resFolder = "";
 GameManager::GameTime GameManager::mTime;
 GameResources GameManager::Resources;
+
+GameWindow* GameManager::mMainWindow = nullptr;
+std::unique_ptr<Scene> GameManager::mScene = nullptr;
 
 GameManager::constructor::constructor() {
     initializePlatform();
@@ -49,7 +53,7 @@ void GameManager::createWindow(const WindowConfig& windowConfig) {
         int flags = 0;
         flags |= (fullScreen)? (int)WindowCreateFlags::WINDOW_FULL_SCREEN : 0;
 
-        mainWindow = new GameWindow(windowConfig.width, windowConfig.height, windowConfig.xPos, windowConfig.yPos, windowConfig.centered, windowConfig.gameName, flags);
+        mMainWindow = new GameWindow(windowConfig.width, windowConfig.height, windowConfig.xPos, windowConfig.yPos, windowConfig.centered, windowConfig.gameName, flags);
         GLenum err = glewInit();
 
         if(err != 0) {
@@ -201,12 +205,17 @@ void GameManager::executeGameLoop() {
     // Right after init, start the gametime.
     mTime.start();
 
-    while(!mainWindow->isClosing()) 
+    while(!mMainWindow->isClosing()) 
     {
+        if (mScene != nullptr)
+        {
+            mScene->render();
+        }
+
         render();
 
-        mainWindow->swapBuffers();
-        mainWindow->pollEvents();
+        mMainWindow->swapBuffers();
+        mMainWindow->pollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Add a frame and output the FPS if applicable.
@@ -225,6 +234,7 @@ void GameManager::load()
 
 void GameManager::init() 
 {
+    mScene->init();
 }
 
 void GameManager::update()
@@ -261,3 +271,7 @@ float GameManager::getProgramRuntime(TimeUnit unit) {
     return 0;
 }
 
+void GameManager::closeProgram()
+{
+	mMainWindow->close();
+}

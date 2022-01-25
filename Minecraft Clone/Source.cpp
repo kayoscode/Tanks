@@ -1,15 +1,22 @@
 #include <vector>
 #include <string>
 
-#include "../Engine/GameManager.h"
-#include "../Logger/StaticLogger.h"
-#include "../Serializers/OBJ Serializer/ModelLoader.h"
+#include "Engine/GameManager.h"
+#include "Logger/StaticLogger.h"
+#include "Serializers/OBJ Serializer/ModelLoader.h"
 #include "Render/Shaders/ModelShader.h"
+#include "Render/Pipelines/SceneRenderPipeline.h"
 
 int main()
 {
 	GameManager::setResPath("res/");
 	GameManager::createWindow(GameManager::resPath() + "settings.json");
+
+	std::unique_ptr<RenderPipeline> mainSceneRenderPipeline =
+		std::make_unique<RenderMainScenePipeline>();
+
+	std::unique_ptr<Scene> mainScene = std::make_unique<Scene>(std::move(mainSceneRenderPipeline));
+	GameManager::setScene(std::move(mainScene));
 
     // Load the brick texture.
     std::unique_ptr<Texture> brickTexture = std::make_unique<Texture>();

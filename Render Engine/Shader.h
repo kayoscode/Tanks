@@ -77,6 +77,7 @@ public:
 	/// <param name="fragmentShaderPath"></param>
 	void loadShaders(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 
+protected:
 	/// <summary>
 	/// Uniform loading functions.
 	/// </summary>
@@ -116,7 +117,6 @@ public:
 	void loadMatrix44f(unsigned int location, const Matrix44f& value);
 	void loadMatrix44d(unsigned int location, const Matrix44d& value);
 
-protected:
 	/// <summary>
 	/// Returns the location of the attribute.
 	/// </summary>

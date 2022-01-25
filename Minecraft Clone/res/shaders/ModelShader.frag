@@ -9,9 +9,6 @@ out vec4 color;
 uniform sampler2D diffuseTexture;
 
 void main() {
-    normalize(transformedNormal);
-    normalize(toLightVector);
-
     float brightness = dot(transformedNormal, toLightVector);
     brightness = max(brightness, .2);
 

@@ -21,6 +21,15 @@
     <Filter Include="Render\Shaders\Source Files">
       <UniqueIdentifier>{29d1540e-ee9f-4cda-8d78-d283feaae1ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render\Pipelines">
+      <UniqueIdentifier>{a9ef22bb-e404-49fe-9c50-732b5fb4a3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Pipelines\Header Files">
+      <UniqueIdentifier>{d52174ae-d8ff-4eb8-880a-cc38d466bfc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Pipelines\Source Files">
+      <UniqueIdentifier>{86a90527-8019-48df-b1b2-d9275d87664c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -31,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="Render\Shaders\ModelShader.cpp">
       <Filter>Render\Shaders\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Pipelines\SceneRenderPipeline.cpp">
+      <Filter>Render\Pipelines\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +57,9 @@
     </ClInclude>
     <ClInclude Include="TextShader.h">
       <Filter>Render\Shaders\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Pipelines\SceneRenderPipeline.h">
+      <Filter>Render\Pipelines\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

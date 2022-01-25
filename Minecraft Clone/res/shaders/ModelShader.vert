@@ -17,9 +17,9 @@ uniform mat4 modelMatrix;
 void main() {
     texCoord0 = texCoord;
 
-    transformedNormal = (modelMatrix * vec4(normal, 0)).xyz;
+    transformedNormal = normalize((modelMatrix * vec4(normal, 0)).xyz);
     vec4 worldPosition = modelMatrix * vec4(position, 1);
 
     gl_Position = projectionMatrix * viewMatrix * worldPosition;
-    toLightVector = lightPos - worldPosition.xyz;
+    toLightVector = normalize(lightPos - worldPosition.xyz);
 }
