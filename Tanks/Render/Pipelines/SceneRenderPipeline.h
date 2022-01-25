@@ -6,7 +6,7 @@
 #include "Render Engine/Texture.h"
 #include "Render Engine/Camera.h"
 
-#include "Minecraft Clone/Render/Shaders/ModelShader.h"
+#include "Tanks/Render/Shaders/ModelShader.h"
 
 /// <summary>
 /// Renders the main scene.
