@@ -5,8 +5,31 @@
 #include "Engine/GameManager.h"
 #include "Engine/GameWindow.h"
 
+#include "Serializers/OBJ Serializer/ModelLoader.h"
+
 void RenderMainScene::init()
 {
+    // Load the brick texture.
+    std::unique_ptr<Texture> texture = std::make_unique<Texture>();
+    texture->loadFromFile(GameManager::resPath() + "textures/Bricks.png");
+    GameManager::Resources.TextureResources.addRegistry("Bricks", std::move(texture));
+
+    // Load the model shader.
+    std::unique_ptr<ShaderProgram> shader = std::make_unique<ModelShader>();
+    GameManager::Resources.ShaderResources.addRegistry("Model", std::move(shader));
+
+	// Load model.
+    IndexedModel model;
+    ModelLoader::loadOBJ(GameManager::resPath() + "models/cube.obj", model);
+    std::unique_ptr<IndexedMesh> mesh = std::make_unique<IndexedMesh>();
+
+	mesh->setIndices(model.indices, model.indexCount);
+	mesh->addFloatData(model.positions, model.positionsCount, 3);
+	mesh->addFloatData(model.uvs, model.uvsCount, 2);
+	mesh->addFloatData(model.normals, model.normalsCount, 3);
+	GameManager::Resources.MeshResources.addRegistry("Cube", std::move(mesh));
+
+	// Load resources.
 	modelShader = static_cast<ModelShader*>(GameManager::Resources.
 		ShaderResources.getRegistry("Model"));
 
@@ -56,7 +79,6 @@ void RenderMainScene::execute()
 void RenderMainScenePipeline::init()
 {
 	mMainSceneRender.init();
-
 }
 
 void RenderMainScenePipeline::render()

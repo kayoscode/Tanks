@@ -8,15 +8,15 @@
 #include "Utils/Timer.h"
 #include "Render Engine/Scene.h"
 #include "ResourceManager.h"
+#include "GameWindow.h"
 
 #include "Render Engine/Mesh.h"
 #include "Render Engine/Texture.h"
 #include "Render Engine/Shader.h"
 
-class GameWindow;
-
 /// <summary>
 /// Class responsible for handling all game resources.
+/// <author>Bryce Young 1/24/2022</author>
 /// </summary>
 class GameResources
 {
@@ -110,7 +110,13 @@ public:
 	 * or the program closes
 	 * @param windowConfig the initial window configuration
 	 * */
-	static void executeGameLoop();
+	static void executeRenderLoop();
+
+	/// <summary>
+	/// Collects input on the window.
+	/// Should be handled from the main thread.
+	/// </summary>
+	static void executeInputLoop();
 
 	/**
 	 * Creates a window and initializes graphics
@@ -197,8 +203,12 @@ private:
 	static void update();
 	static void render();
 
+	/// <summary>
+	/// Every window is registered with a thread for rendering.
+	/// </summary>
 	static GameWindow* mMainWindow;
-	static std::thread* updateLoop;
+	static std::thread mMainWindowRenderThread;
+	static void mainWindowRenderThread();
 
 	static std::string resFolder;
 	static Platform platform;

@@ -5,8 +5,6 @@
 #include "Render Engine/Camera.h"
 #include "Math/Math.h"
 
-#include "GameWindow.h"
-
 #include <iostream>
 #include <sstream>
 
@@ -34,21 +32,33 @@ GameManager::GameTime GameManager::mTime;
 GameResources GameManager::Resources;
 
 GameWindow* GameManager::mMainWindow = nullptr;
+std::thread GameManager::mMainWindowRenderThread;
 std::unique_ptr<Scene> GameManager::mScene = nullptr;
 
-GameManager::constructor::constructor() {
+void GameManager::mainWindowRenderThread()
+{
+    mMainWindow->setAsCurrent();
+    executeRenderLoop();
+}
+
+GameManager::constructor::constructor() 
+{
     initializePlatform();
 }
 
-GameManager::constructor::~constructor() {
+GameManager::constructor::~constructor() 
+{
 }
 
-void GameManager::createWindow(const WindowConfig& windowConfig) {
+void GameManager::createWindow(const WindowConfig& windowConfig) 
+{
     // Init glfw and create window.
-    if(!glfwInit()) {
+    if(!glfwInit()) 
+    {
         StaticLogger::instance.critical("Could not initialize [^'window]");
     }
-    else {
+    else 
+    {
         bool fullScreen = windowConfig.fullscreen;
         int flags = 0;
         flags |= (fullScreen)? (int)WindowCreateFlags::WINDOW_FULL_SCREEN : 0;
@@ -63,6 +73,11 @@ void GameManager::createWindow(const WindowConfig& windowConfig) {
             StaticLogger::instance.trace("Initialized [^'graphics instance] on [^'main thread]");
         }
     }
+
+    // Spawn the render thread and move gl context.
+    glfwMakeContextCurrent(nullptr);
+    mMainWindowRenderThread = std::thread(mainWindowRenderThread);
+    mMainWindowRenderThread.detach();
 }
 
 void GameManager::createWindow(const std::string& settingsPath) {
@@ -196,7 +211,16 @@ void GameManager::initializePlatform() {
     #endif
 }
 
-void GameManager::executeGameLoop() {
+void GameManager::executeInputLoop()
+{
+    while (!mMainWindow->isClosing())
+    {
+        mMainWindow->pollEvents();
+    }
+}
+
+void GameManager::executeRenderLoop() 
+{
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
 
@@ -215,7 +239,6 @@ void GameManager::executeGameLoop() {
         render();
 
         mMainWindow->swapBuffers();
-        mMainWindow->pollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Add a frame and output the FPS if applicable.
