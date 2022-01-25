@@ -35,12 +35,12 @@ public:
 
 	}
 
-	Matrix44f getTransformationMatrix()
+	const Matrix44f& getTransformationMatrix()
 	{
 		return mTransformationMatrix;
 	}
 
-	virtual void update(Entity* object)
+	void calculateTransformationMatrix()
 	{
 		Matrix44f translation;
 		Matrix44f rotation(this->Rotation.toMatrix());

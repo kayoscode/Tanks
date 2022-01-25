@@ -28,11 +28,16 @@
 GameManager::constructor GameManager::cons;
 Platform GameManager::platform;
 std::string GameManager::resFolder = "";
-GameManager::GameTime GameManager::mTime;
 GameResources GameManager::Resources;
 
-GameWindow* GameManager::mMainWindow = nullptr;
+GameManager::GameTime GameManager::mRenderTime;
+GameManager::GameTime GameManager::mUpdateTime;
+GameManager::GameTime GameManager::mInputTime;
+
 std::thread GameManager::mMainWindowRenderThread;
+std::thread GameManager::mUpdateThread;
+
+GameWindow* GameManager::mMainWindow = nullptr;
 std::unique_ptr<Scene> GameManager::mScene = nullptr;
 
 GameManager::constructor::constructor() 
@@ -67,11 +72,21 @@ void GameManager::createWindow(const WindowConfig& windowConfig)
             StaticLogger::instance.trace("Initialized [^'graphics instance] on [^'main thread]");
         }
     }
+}
+
+void GameManager::start()
+{
+    // Init: load resources.
+    init();
 
     // Spawn the render thread and move GL context to new thread.
     glfwMakeContextCurrent(nullptr);
     mMainWindowRenderThread = std::thread(executeRenderLoop);
     mMainWindowRenderThread.detach();
+
+    // Spawn update thread.
+    mUpdateThread = std::thread(executeUpdateLoop);
+    mUpdateThread.detach();
 }
 
 void GameManager::createWindow(const std::string& settingsPath) {
@@ -207,9 +222,25 @@ void GameManager::initializePlatform() {
 
 void GameManager::executeInputLoop()
 {
+    mInputTime.start();
+
     while (!mMainWindow->isClosing())
     {
         mMainWindow->pollEvents();
+
+        mInputTime.addFrame(1000000000);
+    }
+}
+
+void GameManager::executeUpdateLoop()
+{
+    mUpdateTime.start();
+
+    while (!mMainWindow->isClosing())
+    {
+        update();
+
+        mUpdateTime.addFrame(1000000000);
     }
 }
 
@@ -220,35 +251,23 @@ void GameManager::executeRenderLoop()
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
 
-    init();
-
     // Right after init, start the gametime.
-    mTime.start();
+    mRenderTime.start();
 
     while(!mMainWindow->isClosing()) 
     {
-        if (mScene != nullptr)
-        {
-            mScene->render();
-        }
-
         render();
-
         mMainWindow->swapBuffers();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Add a frame and output the FPS if applicable.
-        if(mTime.addFrame(1000000000)) 
+        if(mRenderTime.addFrame(1000000000)) 
         {
-            StaticLogger::instance.trace("Frames per second: {int}", mTime.getFPS());
+            //StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
         }
     }
 
     StaticLogger::instance.trace("Closing window");
-}
-
-void GameManager::load() 
-{
 }
 
 void GameManager::init() 
@@ -258,32 +277,34 @@ void GameManager::init()
 
 void GameManager::update()
 {
+    mScene->update();
 }
 
 void GameManager::render() 
 {
+	mScene->render();
 }
 
 //return program runtime given requested timeunit
 float GameManager::getProgramRuntime(TimeUnit unit) {
     switch(unit) {
         case TimeUnit::HOURS:
-            return mTime.getRuntimeHours();
+            return mRenderTime.getRuntimeHours();
         break;
         case TimeUnit::MINUTES:
-            return mTime.getRuntimeMinutes();
+            return mRenderTime.getRuntimeMinutes();
         break;
         case TimeUnit::SECONDS:
-            return mTime.getRuntimeSeconds();
+            return mRenderTime.getRuntimeSeconds();
         break;
         case TimeUnit::MILLISECONDS:
-            return mTime.getRuntimeMillis();
+            return mRenderTime.getRuntimeMillis();
         break;
         case TimeUnit::MICROSECONDS:
-            return mTime.getRuntimeMicros();
+            return mRenderTime.getRuntimeMicros();
         break;
         case TimeUnit::NANOSECONDS:
-            return (float)mTime.getRuntimeNanoseconds();
+            return (float)mRenderTime.getRuntimeNanoseconds();
         break;
     }
 

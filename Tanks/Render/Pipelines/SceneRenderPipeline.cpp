@@ -9,7 +9,7 @@
 
 void RenderMainScene::init(Scene& scene)
 {
-	mCamera = (Camera3D*)scene.getCamera();
+	mCamera = std::make_unique<Camera3D>();
 	mCamera->createProjectionMatrix(1.0f,
 		GameManager::getGameWindow()->getAspectRatio(),
 		.01f, 1000);
@@ -34,14 +34,14 @@ void RenderMainScene::execute(Scene& scene)
 	mCamera->calculateViewMatrix();
 
 	mModelShader->loadLightPosition(Vector3f(0, 0, 5));
-	mModelShader->loadCamera(scene.getCamera()->getViewMatrix());
+	mModelShader->loadCamera(mCamera->getViewMatrix());
 
 	// Render each entity.
 	for (auto entity = scene.getEntitiesIteratorStart(); entity != scene.getEntitiesIteratorEnd(); ++entity)
 	{
-		entity->get()->update();
+		entity->get()->getTransform()->calculateTransformationMatrix();
 		mModelShader->loadModelMatrix(entity->get()->getTransform()->getTransformationMatrix());
-		entity->get()->getMesh()->render();
+		entity->get()->render();
 	}
 }
 

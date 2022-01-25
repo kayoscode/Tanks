@@ -44,6 +44,7 @@ public:
 
 	virtual void init();
 	virtual void update();
+	virtual void render() {} 
 
 protected:
 	std::string mTag;
@@ -66,6 +67,14 @@ public:
 		Texture* texture, 
 		const std::string& tag = "untagged");
 	virtual ~RenderableEntity();
+
+	/// <summary>
+	/// Renders the renderable entity.
+	/// </summary>
+	virtual void render()
+	{
+		mMesh->render();
+	}
 
 	Mesh* getMesh() { return mMesh; }
 	void setMesh(Mesh* mesh) { this->mMesh = mesh; }

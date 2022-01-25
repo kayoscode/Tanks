@@ -10,3 +10,7 @@ void Scene::init()
 	this->onInit();
 	mRenderPipeline->init(*this);
 }
+
+void Scene::update()
+{
+}

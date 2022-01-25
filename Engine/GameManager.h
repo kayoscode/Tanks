@@ -30,12 +30,33 @@ public:
         MeshResources("Meshes")
 	{}
 
-	~GameResources() {}
+	virtual ~GameResources() {}
 
 	ResourceManager<Texture> TextureResources;
 	ResourceManager<ShaderProgram> ShaderResources;
 	ResourceManager<Mesh> MeshResources;
 };
+
+/// <summary>
+/// Interface for loading all game resources. Implement at the application level.
+/// Given a render context so textures may be loaded.
+/// </summary>
+class IGlobalResourceLoader
+{
+public:
+	IGlobalResourceLoader()
+	{}
+
+	~IGlobalResourceLoader() {}
+
+	virtual void loadTextures(ResourceManager<Texture>& textureResources) = 0;
+	virtual void loadShaders(ResourceManager<ShaderProgram>& shaderResources) = 0;
+	virtual void loadMeshes(ResourceManager<Mesh>& meshResources) = 0;
+
+protected:
+
+};
+
 
 /**
  * All units of time.
@@ -160,12 +181,31 @@ public:
 		return platform;
 	}
 
-	/**
-	 * Returns the elapsed time since last frame
-	 * */
-	static float getDeltaTime() 
+	/// <summary>
+	/// Returns the elapsed time since last frame.
+	/// </summary>
+	/// <returns></returns>
+	static float getRenderDeltaTime() 
 	{
-		return mTime.getDelta();
+		return mRenderTime.getDelta();
+	}
+
+	/// <summary>
+	/// Returns the elapsed time since last update.
+	/// </summary>
+	/// <returns></returns>
+	static float getUpdateDeltaTime()
+	{
+		return mUpdateTime.getDelta();
+	}
+
+	/// <summary>
+	/// Returns the elapsed time since last input cycle.
+	/// </summary>
+	/// <returns></returns>
+	static float getInputDeltaTime()
+	{
+		return mInputTime.getDelta();
 	}
 
 	/// <summary>
@@ -177,10 +217,33 @@ public:
 		mScene = std::move(scene);
 	}
 
+	/// <summary>
+	/// Returns the active scene.
+	/// </summary>
+	/// <returns></returns>
 	static Scene* getScene()
 	{
 		return mScene.get();
 	}
+
+	/// <summary>
+	/// Loads all global resources.
+	/// </summary>
+	/// <param name="loader"></param>
+	static void loadResources(IGlobalResourceLoader& loader)
+	{
+		loader.loadShaders(Resources.ShaderResources);
+		loader.loadTextures(Resources.TextureResources);
+		loader.loadMeshes(Resources.MeshResources);
+	}
+
+	/// <summary>
+	/// Starts the engine run process.
+	/// </summary>
+		/// <summary>
+	/// Starts the engine run process.
+	/// </summary>
+	static void start();
 
 	/// <summary>
 	/// Returns the program runtime.
@@ -191,19 +254,21 @@ public:
 	static GameResources Resources;
 
 private:
-	/**
-	 * Performs the gameloop until the user chooses to end the program
-	 * or the program closes
-	 * @param windowConfig the initial window configuration
-	 * */
+	/// <summary>
+	/// Performs render on thread.
+	/// </summary>
 	static void executeRenderLoop();
+
+	/// <summary>
+	/// Performs update on thread.
+	/// </summary>
+	static void executeUpdateLoop();
 
 	/// <summary>
 	/// Initializes the engine with platform information and other init necessities.
 	/// </summary>
 	static void initializePlatform();
 
-	static void load();
 	static void init();
 	static void update();
 	static void render();
@@ -213,6 +278,7 @@ private:
 	/// </summary>
 	static GameWindow* mMainWindow;
 	static std::thread mMainWindowRenderThread;
+	static std::thread mUpdateThread;
 
 	static std::string resFolder;
 	static Platform platform;
@@ -326,6 +392,8 @@ private:
 		float delta;
 	};
 
-	static GameTime mTime;
+	static GameTime mRenderTime;
+	static GameTime mUpdateTime;
+	static GameTime mInputTime;
 	static std::unique_ptr<Scene> mScene;
 };

@@ -55,7 +55,6 @@ void Entity::init()
 
 void Entity::update()
 {
-	mTransform->update(this);
 	updateComponents();
 }
 

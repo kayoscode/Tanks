@@ -11,7 +11,7 @@
     <ClCompile Include="Render\Pipelines\SceneRenderPipeline.cpp">
       <Filter>Render\Pipeline</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
+    <ClCompile Include="Render\Scenes\TankGameScene.cpp">
       <Filter>Render\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -25,11 +25,14 @@
     <ClInclude Include="Render\Pipelines\SceneRenderPipeline.h">
       <Filter>Render\Pipeline</Filter>
     </ClInclude>
-    <ClInclude Include="TextShader.h">
-      <Filter>Render\Shader</Filter>
+    <ClInclude Include="ResourceLoader.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
+    <ClInclude Include="Render\Scenes\TankGameScene.h">
       <Filter>Render\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Shaders\TextShader.h">
+      <Filter>Render\Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,5 +48,14 @@
     <Filter Include="Render\Scenes">
       <UniqueIdentifier>{1d0f551e-6e81-4596-8772-ddbdc6e1acea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{52273277-8675-4159-982a-66d54ec9bb8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{690acfbf-dcdd-48c2-b489-90f3c9d8ac46}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
