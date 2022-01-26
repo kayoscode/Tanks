@@ -53,10 +53,10 @@ struct Vector3 {
     }
 
     //scaling
-    Vector3<T> operator *(T& scale) const {
+    Vector3<T> operator *(const T& scale) const {
         return Vector3<T>(x * scale, y * scale, z * scale);
     }
-    Vector3<T>& operator *=(T& scale) {
+    Vector3<T>& operator *=(const T& scale) {
         x *= scale;
         y *= scale;
         z *= scale;
@@ -70,7 +70,16 @@ struct Vector3 {
 
     //cross product
     Vector3<T> operator %(const Vector3<T>& other) const {
-        return Vector3<T>(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
+        return Vector3<T>(
+            other.y * z - other.z * y, 
+            other.z * x - other.x * z, 
+            other.x * y - other.y * x
+        );
+
+                //public static Vector3 operator %(Vector3 right, Vector3 left)
+                                //left.y * right.z - left.z * right.y,
+								//right.x * left.z - right.z * left.x,
+								//left.x* right.y - left.y * right.x);
     }
 
     //normalize

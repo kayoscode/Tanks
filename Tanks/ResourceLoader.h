@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/GameManager.h"
+#include "Tanks/Render/Shaders/ModelShader.h"
 
 /// <summary>
 /// Loads global resources for the tank game.

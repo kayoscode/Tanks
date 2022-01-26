@@ -52,6 +52,21 @@ public:
 		mTransformationMatrix = translation * rotation * scale;
 	}
 
+	/// <summary>
+	/// Points the transform towards a specific point.
+	/// </summary>
+	/// <param name="point"></param>
+	void lookAt(Vector3f point)
+	{
+		Vector3f forward(Position - point);
+		forward.normalize();
+
+		Vector3f right = forward % Vector3f(0, 1, 0);
+		Vector3f up = right % forward;
+
+		Rotation.lookRotation(forward, up);
+	}
+
 	Vector3f Position;
 	Vector3f Scale;
 	Quaternionf Rotation;

@@ -1,5 +1,4 @@
-#ifndef INCLUDE_INPUT_H
-#define INCLUDE_INPUT_H
+#pragma once
 
 #include "Keyboard.h"
 #include "Mouse.h"
@@ -250,5 +249,3 @@ class MouseScrollDown : public Input {
             this->isActive = Mouse::getScrollDY() > 0;
         }
 };
-
-#endif

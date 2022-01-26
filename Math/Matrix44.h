@@ -130,6 +130,33 @@ struct Matrix44{
         return *this;
     }
 
+    Matrix44<T>& setForward(const Vector3<T>& forward)
+    {
+		this->data[2][0] = forward.x;
+		this->data[2][1] = forward.y;
+		this->data[2][2] = forward.z;
+
+        return *this;
+    }
+
+    Matrix44<T>& setUp(const Vector3<T>& up)
+    {
+		this->data[1][0] = up.x;
+		this->data[1][1] = up.y;
+		this->data[1][2] = up.z;
+
+        return *this;
+    }
+
+    Matrix44<T>& setRight(const Vector3<T>& right)
+    {
+		this->data[0][0] = right.x;
+		this->data[0][1] = right.y;
+		this->data[0][2] = right.z;
+
+        return *this;
+    }
+
     Matrix44<T>& setZero(){
         data[0][0] = 0; 
         data[0][1] = 0; 

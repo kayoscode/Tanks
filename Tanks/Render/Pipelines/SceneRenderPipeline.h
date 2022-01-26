@@ -24,7 +24,7 @@ protected:
 
 private:
 	ModelShader* mModelShader;
-	std::unique_ptr<Camera3D> mCamera;
+	Camera3D* mCamera;
 };
 
 class RenderMainScenePipeline : public RenderPipeline

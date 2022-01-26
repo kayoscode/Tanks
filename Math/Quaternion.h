@@ -159,6 +159,24 @@ class Quaternion
 
             return *this;
         }
+
+        Vector3<T> forward()
+        {
+             Vector3<T> targetForward = *this * Vector3<T>(0, 0, -1);
+             return targetForward;
+        }
+
+        Vector3<T> up()
+        {
+             Vector3<T> targetUp = *this * Vector3<T>(0, 1, 0);
+             return targetUp;
+        }
+
+        Vector3<T> right()
+        {
+             Vector3<T> targetRight = *this * Vector3<T>(1, 0, 0);
+             return targetRight;
+        }
         
         /**
          * Converts quaternion to Euler angles
@@ -264,26 +282,18 @@ class Quaternion
         {
             Vector3<T> forward(f);
             Vector3<T> up(u);
-
             forward.normalize();
             up.normalize();
+
             Vector3<T> right = forward % up;
 
             Matrix44<T> rot;
-            rot.data[0][0] = right.x;
-            rot.data[1][0] = right.y;
-            rot.data[2][0] = right.z;
+            rot.setRight(right);
+            rot.setUp(up);
+            rot.setForward(forward);
 
-            rot.data[0][1] = up.x;
-            rot.data[1][1] = up.y;
-            rot.data[2][1] = up.z;
-
-            rot.data[0][2] = forward.x;
-            rot.data[1][2] = forward.y;
-            rot.data[2][2] = forward.z;
-
-            setMatrix(rot);
-            normalize();
+            this->setMatrix(rot);
+            this->normalize();
 
             return *this;
         }

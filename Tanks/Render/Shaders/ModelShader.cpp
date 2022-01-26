@@ -22,7 +22,7 @@ void ModelShader::loadLightPosition(const Vector3f& lightPos)
     loadUniformVec3f(locationLightPos, lightPos);
 }
 
-void ModelShader::loadCamera(const Matrix44f& viewMatrix) 
+void ModelShader::loadCameraViewMatrix(const Matrix44f& viewMatrix) 
 {
     loadMatrix44f(locationViewMatrix, viewMatrix);
 }

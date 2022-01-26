@@ -62,11 +62,11 @@ struct Vector4 {
     }
 
     //scaling
-    Vector4<T> operator *(T& scale) {
+    Vector4<T> operator *(const T& scale) {
         return Vector4<T>(x * scale, y * scale, z * scale, w * scale);
     }
 
-    Vector4<T>& operator *=(T& scale) {
+    Vector4<T>& operator *=(const T& scale) {
         x *= scale;
         y *= scale;
         z *= scale;

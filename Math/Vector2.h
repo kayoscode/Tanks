@@ -48,10 +48,10 @@ struct Vector2 {
     }
 
     //scaling
-    Vector2<T> operator *(T& scale) const {
+    Vector2<T> operator *(const T& scale) const {
         return Vector2<T>(x * scale, y * scale);
     }
-    Vector2<T>& operator *=(T& scale) {
+    Vector2<T>& operator *=(const T& scale) {
         x *= scale;
         y *= scale;
         return *this;

@@ -185,7 +185,7 @@ public:
 	/// Returns the elapsed time since last frame.
 	/// </summary>
 	/// <returns></returns>
-	static float getRenderDeltaTime() 
+	static double getRenderDeltaTime() 
 	{
 		return mRenderTime.getDelta();
 	}
@@ -194,7 +194,7 @@ public:
 	/// Returns the elapsed time since last update.
 	/// </summary>
 	/// <returns></returns>
-	static float getUpdateDeltaTime()
+	static double getUpdateDeltaTime()
 	{
 		return mUpdateTime.getDelta();
 	}
@@ -203,7 +203,7 @@ public:
 	/// Returns the elapsed time since last input cycle.
 	/// </summary>
 	/// <returns></returns>
-	static float getInputDeltaTime()
+	static double getInputDeltaTime()
 	{
 		return mInputTime.getDelta();
 	}
@@ -336,7 +336,7 @@ private:
 				ret = true;
 			}
 
-			this->delta = elapsed / 1e9f;
+			this->delta = elapsed / 1e9;
 
 			deltaTime.reset();
 			return ret;
@@ -344,27 +344,27 @@ private:
 
 		inline float getRuntimeHours() 
 		{
-			return totalNanos / 3.6e12f;
+			return totalNanos / 3.6e12;
 		}
 
 		inline float getRuntimeMinutes() 
 		{
-			return totalNanos / 6e10f;
+			return totalNanos / 6e10;
 		}
 
 		inline float getRuntimeSeconds() 
 		{
-			return totalNanos / 1e9f;
+			return totalNanos / 1e9;
 		}
 
 		inline float getRuntimeMillis() 
 		{
-			return totalNanos / 1e6f;
+			return totalNanos / 1e6;
 		}
 
 		inline float getRuntimeMicros() 
 		{
-			return totalNanos / 1000.0f;
+			return totalNanos / 1000.0;
 		}
 
 		inline uint64_t getRuntimeNanoseconds() 
@@ -377,7 +377,7 @@ private:
 			return previousFPS;
 		}
 
-		inline float getDelta() 
+		inline double getDelta() 
 		{
 			return delta;
 		}
@@ -389,7 +389,7 @@ private:
 		uint64_t elapsedNanosThisSecond;
 		int frameCount = 0;
 		int previousFPS = 0;
-		float delta;
+		double delta;
 	};
 
 	static GameTime mRenderTime;

@@ -13,7 +13,7 @@ class ModelShader : public ShaderProgram {
 
         void setUniformLocations();
 
-        void loadCamera(const Matrix44f& viewMatrix);
+        void loadCameraViewMatrix(const Matrix44f& viewMatrix);
         void loadCameraProjection(const Matrix44f& projectionMatrix);
         void loadModelMatrix(const Matrix44f& modelMatrix);
         void loadDiffuseTexture(int textureIndex);

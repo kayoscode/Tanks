@@ -64,8 +64,11 @@ class Camera3D : public Camera {
         /// Calculates the view matrix from a rotation and position.
         /// </summary>
         void calculateViewMatrix() {
-            viewMatrix = mTransform->Rotation.toMatrix();
-            viewMatrix.translate(mTransform->Position);
+            Matrix44f translation;
+            translation.translate(mTransform->Position);
+            Matrix44f rotation = mTransform->Rotation.toMatrix();
+
+            viewMatrix = translation * rotation;
             viewMatrix.invert();
         }
 

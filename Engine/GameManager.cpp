@@ -241,6 +241,8 @@ void GameManager::executeUpdateLoop()
         update();
 
         mUpdateTime.addFrame(1000000000);
+        mMainWindow->pollEvents();
+        glfwPollEvents();
     }
 }
 

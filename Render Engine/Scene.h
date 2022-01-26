@@ -32,6 +32,24 @@ public:
 		mEntities.push_back(std::move(entity));
 	}
 
+	/// <summary>
+	/// Returns the first entity found that has the set tag.
+	/// </summary>
+	/// <param name="tag"></param>
+	/// <returns></returns>
+	Entity* getEntityWithTag(const std::string& tag)
+	{
+		for (auto entity = mEntities.begin(); entity != mEntities.end(); ++entity)
+		{
+			if (entity->get()->getTag() == tag)
+			{
+				return entity->get();
+			}
+		}
+
+		return nullptr;
+	}
+
 	virtual void init();
 	virtual void render();
 	virtual void update();
