@@ -6,8 +6,11 @@
 #include "Render Engine/Texture.h"
 #include "Render Engine/Camera.h"
 #include "Render Engine/Scene.h"
+#include "Render Engine/Framebuffer.h"
+#include "Render Engine/Entity.h"
 
 #include "Tanks/Render/Shaders/ModelShader.h"
+#include "Tanks/TankTracksShader.h"
 
 /// <summary>
 /// Renders the main scene.
@@ -27,6 +30,33 @@ private:
 	Camera3D* mCamera;
 };
 
+class RenderTankTracks : public RenderPipelineStage
+{
+public:
+	void init(Scene& scene);
+
+protected:
+	void prepare(Scene& scene);
+	void execute(Scene& scene);
+
+private:
+	TextureCombineShader* mTextureCombineShader;
+	TireTracksShader* mTireTracksShader;
+	
+	// Render tank tracks here.
+	Framebuffer* mTankTracksFramebuffer;
+
+	// Final background texture rendered to here.
+	Framebuffer* mCombinedFramebuffer;
+
+	// The unmodified background texture.
+	Texture* mUnmodifiedBgTexture;
+	Entity* mBackgroundEntity;
+	std::unique_ptr<RenderableEntity> mTireTracksObj;
+
+	std::unique_ptr<Mesh2D> mTextureCombineMesh;
+};
+
 class RenderMainScenePipeline : public RenderPipeline
 {
 public:
@@ -34,5 +64,6 @@ public:
 	void render(Scene& scene);
 
 private:
+	RenderTankTracks mRenderTankTracks;
 	RenderMainScene mMainSceneRender;
 };

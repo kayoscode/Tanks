@@ -34,6 +34,9 @@
     <ClInclude Include="Render\Shaders\TextShader.h">
       <Filter>Render\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="TankTracksShader.h">
+      <Filter>Render\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

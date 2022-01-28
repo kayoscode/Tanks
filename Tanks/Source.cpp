@@ -19,8 +19,6 @@ int main()
 	GameManager::loadResources(loader);
 	GameManager::start();
 
-	GameManager::executeInputLoop();
-
 	StaticLogger::instance.trace("Total program runtime (seconds): [ts]");
 
 	return 0;

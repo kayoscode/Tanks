@@ -189,6 +189,7 @@
     <ClInclude Include="Render\Shaders\ModelShader.h" />
     <ClInclude Include="Render\Shaders\TextShader.h" />
     <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="TankTracksShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

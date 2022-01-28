@@ -73,6 +73,11 @@ public:
 	/// </summary>
 	virtual void render()
 	{
+		// Bind the texture to slot 0.
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mTexture->getDiffuseID());
+
+		// Render the mesth.
 		mMesh->render();
 	}
 

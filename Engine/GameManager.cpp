@@ -1,5 +1,8 @@
 #include "GameManager.h"
 
+#include "Keyboard.h"
+#include "Mouse.h"
+
 #include "Serializers/JSON Serializer/JsonSerializer.h"
 #include "Logger/StaticLogger.h"
 #include "Render Engine/Camera.h"
@@ -32,10 +35,8 @@ GameResources GameManager::Resources;
 
 GameManager::GameTime GameManager::mRenderTime;
 GameManager::GameTime GameManager::mUpdateTime;
-GameManager::GameTime GameManager::mInputTime;
 
 std::thread GameManager::mMainWindowRenderThread;
-std::thread GameManager::mUpdateThread;
 
 GameWindow* GameManager::mMainWindow = nullptr;
 std::unique_ptr<Scene> GameManager::mScene = nullptr;
@@ -79,14 +80,15 @@ void GameManager::start()
     // Init: load resources.
     init();
 
+    glClearColor(.0f, 1, 1, 1);
+
     // Spawn the render thread and move GL context to new thread.
+    Framebuffer::unBind(mMainWindow->getWidth(), mMainWindow->getHeight());
     glfwMakeContextCurrent(nullptr);
     mMainWindowRenderThread = std::thread(executeRenderLoop);
     mMainWindowRenderThread.detach();
 
-    // Spawn update thread.
-    mUpdateThread = std::thread(executeUpdateLoop);
-    mUpdateThread.detach();
+    executeUpdateLoop();
 }
 
 void GameManager::createWindow(const std::string& settingsPath) {
@@ -220,38 +222,26 @@ void GameManager::initializePlatform() {
     #endif
 }
 
-void GameManager::executeInputLoop()
-{
-    mInputTime.start();
-
-    while (!mMainWindow->isClosing())
-    {
-        mMainWindow->pollEvents();
-
-        mInputTime.addFrame(1000000000);
-    }
-}
-
 void GameManager::executeUpdateLoop()
 {
     mUpdateTime.start();
 
     while (!mMainWindow->isClosing())
     {
+        mMainWindow->pollEvents();
         update();
 
         mUpdateTime.addFrame(1000000000);
-        mMainWindow->pollEvents();
-        glfwPollEvents();
     }
 }
 
 void GameManager::executeRenderLoop() 
 {
     mMainWindow->setAsCurrent();
-    glClearColor(.0f, 1, 1, 1);
     glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     // Right after init, start the gametime.
     mRenderTime.start();
@@ -265,7 +255,7 @@ void GameManager::executeRenderLoop()
         // Add a frame and output the FPS if applicable.
         if(mRenderTime.addFrame(1000000000)) 
         {
-            //StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
+            StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
         }
     }
 
@@ -280,6 +270,8 @@ void GameManager::init()
 void GameManager::update()
 {
     mScene->update();
+	Keyboard::update();
+	Mouse::update();
 }
 
 void GameManager::render() 

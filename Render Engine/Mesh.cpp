@@ -99,6 +99,31 @@ int Mesh::getBufferMode()
     return GL_DYNAMIC_DRAW;
 }
 
+Mesh::~Mesh()
+{
+    if (vao != -1)
+    {
+		glBindVertexArray(vao);
+
+        for (int i = 0; i < this->vbos.size(); i++)
+        {
+            glDeleteBuffers(1, (GLuint*)&vbos[i]);
+        }
+
+        glDeleteVertexArrays(1, (GLuint*)&vao);
+    }
+}
+
+IndexedMesh::~IndexedMesh()
+{
+    if (vao != -1)
+    {
+		glBindVertexArray(vao);
+
+        glDeleteBuffers(1, (GLuint*)&indicesBuffer);
+    }
+}
+
 void IndexedMesh::setIndices(const int* indices, int count) 
 {
     drawCount = count;
@@ -124,12 +149,7 @@ void IndexedMesh::updateIndices(const int* indices, int count)
 void IndexedMesh::render()
 {
     glBindVertexArray(vao);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
-
-	for(int i = 0; i < vbos.size(); ++i) {
-		glEnableVertexAttribArray(i);
-	}
 
 	glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
 }
@@ -138,17 +158,16 @@ void Mesh2D::render()
 {
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glBindVertexArray(vao);
-
-	for (int i = 0; i < vbos.size(); ++i) {
-		glEnableVertexAttribArray(i);
-	}
 
 	glDrawArrays(GL_TRIANGLES, 0, drawCount);
 
 	//glEnableVertexArrayAttrib
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 }

@@ -478,7 +478,8 @@ struct Matrix44{
         return *this;
     }
 
-    T det() {
+    T det() const 
+    {
         T f = data[0][0] * ((data[1][1] * data[2][2] * data[3][3] + data[1][2] * data[2][3] * data[3][1] + data[1][3] * data[2][1] * data[3][2])
                 - data[1][3] * data[2][2] * data[3][1]
                 - data[1][1] * data[2][3] * data[3][2]
@@ -511,7 +512,8 @@ struct Matrix44{
             + t02 * (t10 * t21 - t11 * t20);
     }
 
-    Matrix44<T> inverse() {
+    Matrix44<T> inverse() const 
+    {
         T determinant = this->det();
         Matrix44<T> ret;
 

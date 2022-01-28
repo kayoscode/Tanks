@@ -21,7 +21,7 @@ public:
         :bufferHint(BufferHint::STATIC)
     {}
 
-	virtual ~Mesh() {}
+	virtual ~Mesh();
 
 	/**
 	 * Loads float
@@ -84,6 +84,8 @@ protected:
 class IndexedMesh : public Mesh
 {
 public:
+	~IndexedMesh();
+
 	/// <summary>
 	/// Renders the mesh to a framebuffer.
 	/// </summary>

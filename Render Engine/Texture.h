@@ -15,13 +15,15 @@ class Texture {
 
         }
 
-        ~Texture() {
+        ~Texture() 
+        {
 
         }
 
-        /**
-         * Loads the texture from a file
-         * */
+        /// <summary>
+        /// Loads the texture from a file.
+        /// </summary>
+        /// <param name="path"></param>
         void loadFromFile(const std::string& path) {
             Image img;
             if(!ImageLoader::loadImage(path, img)) {
@@ -31,9 +33,10 @@ class Texture {
             }
         }
 
-        /**
-         * Loads the texture from an image object
-         * */
+        /// <summary>
+        /// Given raw image data, load the texture.
+        /// </summary>
+        /// <param name="img"></param>
         void loadFromImg(Image& img) {
             //load texture id
             glCreateTextures(GL_TEXTURE_2D, 1, &diffuseID);
@@ -60,11 +63,29 @@ class Texture {
         /**
          * @return the texture's id
          * */
-        int getDiffuseID() {
+        int getDiffuseID() 
+        {
             return (int)diffuseID;
         }
 
+        /// <summary>
+        /// Creates the texture from a texture id.
+        /// Note that this texture object now owns that texture and should
+        /// be the sole object that disposes of the ID.
+        /// </summary>
+        /// <param name="textureId"></param>
+        void loadFromTextureID(unsigned int textureId)
+        {
+            if (diffuseID != -1)
+            {
+                // Dispose previous texture.
+            }
+
+            diffuseID = textureId;
+        }
+
     protected:
-        GLuint diffuseID;
+
+        GLuint diffuseID = -1;
 };
 

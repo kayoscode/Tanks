@@ -13,6 +13,7 @@
 #include "Render Engine/Mesh.h"
 #include "Render Engine/Texture.h"
 #include "Render Engine/Shader.h"
+#include "Render Engine/Framebuffer.h"
 
 /// <summary>
 /// Class responsible for handling all game resources.
@@ -26,8 +27,9 @@ public:
 	/// </summary>
 	GameResources()
 		:TextureResources("Textures"),
-        ShaderResources("Shaders"),
-        MeshResources("Meshes")
+		ShaderResources("Shaders"),
+		MeshResources("Meshes"),
+		FramebufferResources("Framebuffers")
 	{}
 
 	virtual ~GameResources() {}
@@ -35,6 +37,7 @@ public:
 	ResourceManager<Texture> TextureResources;
 	ResourceManager<ShaderProgram> ShaderResources;
 	ResourceManager<Mesh> MeshResources;
+	ResourceManager<Framebuffer> FramebufferResources;
 };
 
 /// <summary>
@@ -52,6 +55,7 @@ public:
 	virtual void loadTextures(ResourceManager<Texture>& textureResources) = 0;
 	virtual void loadShaders(ResourceManager<ShaderProgram>& shaderResources) = 0;
 	virtual void loadMeshes(ResourceManager<Mesh>& meshResources) = 0;
+	virtual void loadFramebuffers(ResourceManager<Framebuffer>& framebufferResources) = 0;
 
 protected:
 
@@ -126,12 +130,6 @@ public:
 		bool vSync;
 	};
 
-	/// <summary>
-	/// Collects input on the window.
-	/// Should be handled from the main thread.
-	/// </summary>
-	static void executeInputLoop();
-
 	/**
 	 * Creates a window and initializes graphics
 	 * @param settingsPath path to settings JSON
@@ -200,15 +198,6 @@ public:
 	}
 
 	/// <summary>
-	/// Returns the elapsed time since last input cycle.
-	/// </summary>
-	/// <returns></returns>
-	static double getInputDeltaTime()
-	{
-		return mInputTime.getDelta();
-	}
-
-	/// <summary>
 	/// Sets the current scene.
 	/// </summary>
 	/// <param name="scene"></param>
@@ -232,6 +221,7 @@ public:
 	/// <param name="loader"></param>
 	static void loadResources(IGlobalResourceLoader& loader)
 	{
+		loader.loadFramebuffers(Resources.FramebufferResources);
 		loader.loadShaders(Resources.ShaderResources);
 		loader.loadTextures(Resources.TextureResources);
 		loader.loadMeshes(Resources.MeshResources);
@@ -278,7 +268,6 @@ private:
 	/// </summary>
 	static GameWindow* mMainWindow;
 	static std::thread mMainWindowRenderThread;
-	static std::thread mUpdateThread;
 
 	static std::string resFolder;
 	static Platform platform;
@@ -394,6 +383,5 @@ private:
 
 	static GameTime mRenderTime;
 	static GameTime mUpdateTime;
-	static GameTime mInputTime;
 	static std::unique_ptr<Scene> mScene;
 };
