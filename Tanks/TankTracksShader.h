@@ -8,7 +8,9 @@ class TextureCombineShader : public ShaderProgram
 {
 public:
 	TextureCombineShader()
-		:ShaderProgram({ "position" })
+		:ShaderProgram({ "position" }),
+		locationBgTexture(0),
+		locationTankTracksTexture(0)
 	{
 		loadShaders(GameManager::resPath() + "shaders/TankBG/TextureCombine.vert",
 			GameManager::resPath() + "shaders/TankBG/TextureCombine.frag");
@@ -38,7 +40,9 @@ class TireTracksShader : public ShaderProgram
 {
 public:
 	TireTracksShader()
-		:ShaderProgram({ "position", "texCoord", "normal"})
+		:ShaderProgram({ "position", "texCoord", "normal"}),
+		locationModelMatrix(0),
+		locationTankTracksTexture(0)
 	{
 		loadShaders(GameManager::resPath() + "shaders/TankBG/TireTrack.vert",
 			GameManager::resPath() + "shaders/TankBG/TireTrack.frag");

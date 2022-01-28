@@ -18,7 +18,8 @@ enum class BufferHint {
 class Mesh {
 public:
     Mesh()
-        :bufferHint(BufferHint::STATIC)
+        :drawCount(0),
+		bufferHint(BufferHint::STATIC)
     {}
 
 	virtual ~Mesh();
@@ -84,6 +85,7 @@ protected:
 class IndexedMesh : public Mesh
 {
 public:
+	IndexedMesh() : indicesBuffer(-1) { }
 	~IndexedMesh();
 
 	/// <summary>

@@ -9,10 +9,13 @@ struct Vector3 {
     //assignment constructors
     Vector3(T x) :x(x), y(x), z(x) {
     }
+
     Vector3(T x = 0, T y = 0, T z = 0) :x(x), y(y), z(z) {
     }
+
     Vector3(const Vector2<T>& other, T z = 0) :x(other.x), y(other.y), z(z) {
     }
+
     //copy constructor
     Vector3(const Vector3<T>& other) :x(other.x), y(other.y), z(other.z) {
     }
@@ -56,6 +59,7 @@ struct Vector3 {
     Vector3<T> operator *(const T& scale) const {
         return Vector3<T>(x * scale, y * scale, z * scale);
     }
+
     Vector3<T>& operator *=(const T& scale) {
         x *= scale;
         y *= scale;
@@ -99,6 +103,7 @@ struct Vector3 {
     T magnitude() const {
         return (T)sqrtl(x * x + y * y + z * z);
     }
+
     T magnitudeSquared() const {
         return x * x + y * y + z * z;
     }

@@ -10,6 +10,7 @@
 #define FRAMEBUFFER_BG "BgTexture"
 
 #define TEXTURE_PLAYER "Player"
+#define TEXTURE_ENEMY1 "Enemy1"
 #define TEXTURE_BULLET "Bullet"
 #define TEXTURE_BG "Bg"
 #define TEXTURE_TANK_TRACKS "TankTracks"
@@ -46,11 +47,13 @@ public:
 
 	virtual void loadTextures(ResourceManager<Texture>& textureResources)
 	{
-		// Create global resources.
-		// Load the textures.
 		std::unique_ptr<Texture> playerTexture = std::make_unique<Texture>();
 		playerTexture->loadFromFile(GameManager::resPath() + "textures/Player.png");
 		textureResources.addRegistry(TEXTURE_PLAYER, std::move(playerTexture));
+
+		std::unique_ptr<Texture> enemyTexture = std::make_unique<Texture>();
+		enemyTexture->loadFromFile(GameManager::resPath() + "textures/Enemy.png");
+		textureResources.addRegistry(TEXTURE_ENEMY1, std::move(enemyTexture));
 
 		std::unique_ptr<Texture> bulletTexture = std::make_unique<Texture>();
 		bulletTexture->loadFromFile(GameManager::resPath() + "textures/Bullet.png");

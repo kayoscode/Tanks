@@ -7,4 +7,9 @@ uniform sampler2D tankTracksTexture;
 
 void main() {
 	color = texture(tankTracksTexture, texCoord0);
+	
+	if(color.a < .5)
+	{
+		discard;
+	}
 }

@@ -238,7 +238,7 @@ void GameManager::executeUpdateLoop()
 void GameManager::executeRenderLoop() 
 {
     mMainWindow->setAsCurrent();
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -308,4 +308,11 @@ float GameManager::getProgramRuntime(TimeUnit unit) {
 void GameManager::closeProgram()
 {
 	mMainWindow->close();
+}
+
+void GameManager::GameTime::start()
+{
+	deltaTime.reset();
+	totalNanos = 0;
+	elapsedNanosThisSecond = 0;
 }

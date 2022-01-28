@@ -79,7 +79,7 @@ void RenderTankTracks::init(Scene& scene)
 		GameManager::Resources.MeshResources.getRegistry(MODEL_FLAT_SQUARE),
 		GameManager::Resources.TextureResources.getRegistry(TEXTURE_TANK_TRACKS),
 		"TankTrackObject");
-	mTireTracksObj->getTransform()->Scale = Vector3f(1.8, 1, 0.2);
+	mTireTracksObj->getTransform()->Scale = Vector3f(1.7f, 1, 0.15f);
 
 	mTextureCombineMesh = std::make_unique<Mesh2D>();
 	float positions[12]
@@ -104,34 +104,37 @@ void RenderTankTracks::prepare(Scene& scene)
 {
 	mTireTracksShader->bind();
 	mTankTracksFramebuffer->bind();
+
+	mBackgroundEntity->getTransform()->calculateTransformationMatrix();
 }
 
 void RenderTankTracks::execute(Scene& scene)
 {
 	// Render the tank tracks.
-	Entity* playerTank = scene.getEntityWithTag("Player");
-	TankControl* tankControlScript = static_cast<TankControl*>(playerTank->getComponent("Movement"));
-
-	std::vector<TransformComponent>& playerTireTracks = tankControlScript->getTireTracks();
-
-	mBackgroundEntity->getTransform()->calculateTransformationMatrix();
-	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
-	for (int i = 0; i < playerTireTracks.size(); i++)
+	std::vector<Entity*> tanks = scene.getEntitiesWithTag("Tank");
+	for (auto currentTank : tanks)
 	{
-		playerTireTracks[i].Scale = mTireTracksObj->getTransform()->Scale;
-		playerTireTracks[i].calculateTransformationMatrix();
+		TankControlBase* tankControlScript = static_cast<TankControlBase*>(currentTank->getComponent("Movement"));
+		std::vector<TransformComponent>& tireTracks = tankControlScript->getTireTracks();
 
-		Matrix44f newTransform =
-			mBackgroundEntity->getTransform()->getTransformationMatrix().inverse() *
-			playerTireTracks[i].getTransformationMatrix();
-		
-		mTireTracksShader->loadModelMatrix(newTransform);
-		mTireTracksObj->render();
+		for (int i = 0; i < tireTracks.size(); i++)
+		{
+			tireTracks[i].Scale = mTireTracksObj->getTransform()->Scale;
+			tireTracks[i].calculateTransformationMatrix();
+
+			Matrix44f newTransform =
+				mBackgroundEntity->getTransform()->getTransformationMatrix().inverse() *
+				tireTracks[i].getTransformationMatrix();
+			
+			mTireTracksShader->loadModelMatrix(newTransform);
+			mTireTracksObj->render();
+		}
+
+		tireTracks.clear();
 	}
-	glEnable(GL_DEPTH_TEST);
 
-	playerTireTracks.clear();
+	glEnable(GL_DEPTH_TEST);
 
 	// Combine the textures.
 	mTextureCombineShader->bind();

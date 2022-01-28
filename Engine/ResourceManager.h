@@ -51,7 +51,7 @@ public:
 	/// <returns></returns>
 	T* getRegistry(const std::string& name)
 	{
-		std::map<std::string, std::unique_ptr<T>>::iterator value = mRegistries.find(name);
+		auto value = mRegistries.find(name);
 
 		if (value == mRegistries.end())
 		{

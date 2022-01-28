@@ -332,7 +332,7 @@ class Quaternion
                 T max = MAX(MAX(m00, m11), m22);
                 if (max == m00)
                 {
-                    s = (T)sqrt(m00 - (m11 + m22) + 1.0);
+                    s = (T)sqrt(m00 - (m11 + m22) + (T)1.0);
                     x = s * 0.5f;
                     s = 0.5f / s;
                     y = (m01 + m10) * s;
@@ -341,7 +341,7 @@ class Quaternion
                 }
                 else if (max == m11)
                 {
-                    s = (T)sqrt(m11 - (m22 + m00) + 1.0);
+                    s = (T)sqrt(m11 - (m22 + m00) + (T)1.0);
                     y = s * 0.5f;
                     s = 0.5f / s;
                     z = (m12 + m21) * s;
@@ -350,7 +350,7 @@ class Quaternion
                 }
                 else
                 {
-                    s = (T)sqrt(m22 - (m00 + m11) + 1.0);
+                    s = (T)sqrt(m22 - (m00 + m11) + (T)1.0);
                     z = s * 0.5f;
                     s = 0.5f / s;
                     x = (m20 + m02) * s;

@@ -7,7 +7,8 @@
 #include <math.h>
 
 template <typename T = float>
-struct Matrix44{
+struct Matrix44
+{
     Matrix44(T m00 = 1, T m01 = 0, T m02 = 0, T m03 = 0,
                 T m10 = 0, T m11 = 1, T m12 = 0, T m13 = 0,
                 T m20 = 0, T m21 = 0, T m22 = 1, T m23 = 0,

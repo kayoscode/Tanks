@@ -44,12 +44,12 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -155,6 +155,7 @@
     <ClCompile Include="Render\Shaders\GUIShader.cpp" />
     <ClCompile Include="Render\Shaders\ModelShader.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TankControllers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudioLib\AudioLib.vcxproj">
@@ -189,6 +190,7 @@
     <ClInclude Include="Render\Shaders\ModelShader.h" />
     <ClInclude Include="Render\Shaders\TextShader.h" />
     <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="TankControllers.h" />
     <ClInclude Include="TankTracksShader.h" />
   </ItemGroup>
   <ItemGroup>

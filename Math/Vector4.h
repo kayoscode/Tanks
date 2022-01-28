@@ -20,7 +20,7 @@ struct Vector4 {
     }
 
     //copy constructor
-    Vector4(const Vector4<T>& other): x(other.x), y(other.y), z(other.x), w(other.w) {
+    Vector4(const Vector4<T>& other): x(other.x), y(other.y), z(other.z), w(other.w) {
     }
 
     //implicit casts

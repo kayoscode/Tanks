@@ -14,6 +14,7 @@
     <ClCompile Include="Render\Scenes\TankGameScene.cpp">
       <Filter>Render\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="TankControllers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render\Shaders\GUIShader.h">
@@ -36,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="TankTracksShader.h">
       <Filter>Render\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TankControllers.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
