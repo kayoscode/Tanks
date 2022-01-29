@@ -12,7 +12,7 @@ void main() {
 	
 	if(tracks.r < .3 && tracks.g < .3 && tracks.b < .3)
 	{
-		color = vec4(0, 0, 0, 1);
+		color = tracks;
 	}
 	else
 	{

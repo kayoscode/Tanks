@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
-#include "RenderPipeline.h"
+#include "Render Engine/RenderPipeline.h"
 #include "Render Engine/Camera.h"
-#include "Render Engine/Entity.h"
+#include "Entity.h"
 
 /// <summary>
 /// Class representing a scene. Contains a render pipeline along with all entities 

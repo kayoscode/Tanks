@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Math/Math.h"
-#include "Entity.h"
+#include "Engine/Entity.h"
 
 /**
  * Class representing a camera

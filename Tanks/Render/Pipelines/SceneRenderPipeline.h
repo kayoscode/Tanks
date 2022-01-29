@@ -5,9 +5,9 @@
 #include "Render Engine/Mesh.h"
 #include "Render Engine/Texture.h"
 #include "Render Engine/Camera.h"
-#include "Render Engine/Scene.h"
+#include "Engine/Scene.h"
 #include "Render Engine/Framebuffer.h"
-#include "Render Engine/Entity.h"
+#include "Engine/Entity.h"
 
 #include "Tanks/Render/Shaders/ModelShader.h"
 #include "Tanks/TankTracksShader.h"
@@ -19,6 +19,10 @@
 class RenderMainScene : public RenderPipelineStage
 {
 public:
+	RenderMainScene()
+		:mModelShader(nullptr),
+		mCamera(nullptr){ }
+
 	void init(Scene& scene);
 
 protected:

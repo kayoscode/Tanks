@@ -6,7 +6,8 @@
 #include "Engine/GameManager.h"
 
 TankGameScene::TankGameScene()
-	:Scene(std::make_unique<RenderMainScenePipeline>())
+	:Scene(std::make_unique<RenderMainScenePipeline>()),
+    mCamera(nullptr)
 {
 }
 
@@ -14,12 +15,13 @@ void TankGameScene::onInit()
 {
     // Create camera.
     std::unique_ptr<Camera3D> sceneCamera = std::make_unique<Camera3D>();
+    mCamera = sceneCamera.get();
 	sceneCamera->createProjectionMatrix(1.5,
 		GameManager::getGameWindow()->getAspectRatio(),
-		.01f, 1000);
+		.5f, 100);
 
-    sceneCamera->getTransform()->Position.y = 30;
-    sceneCamera->getTransform()->Position.z = 5;
+    sceneCamera->getTransform()->Position.y = 55;
+    sceneCamera->getTransform()->Position.z = 15;
     sceneCamera->getTransform()->lookAt(Vector3f(0, 0, 0));
 
     addEntity(std::move(sceneCamera));
@@ -55,6 +57,6 @@ void TankGameScene::update()
 {
     for (int i = 0; i < mEntities.size(); i++)
     {
-        mEntities[i]->update();
+        mEntities[i]->update(this);
     }
 }

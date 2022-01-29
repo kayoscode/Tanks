@@ -4,8 +4,8 @@
 #include <string>
 
 #include "Component.h"
-#include "Mesh.h"
-#include "Texture.h"
+#include "Render Engine/Mesh.h"
+#include "Render Engine/Texture.h"
 #include "Serializers/OBJ Serializer/ModelLoader.h"
 
 /// <summary>
@@ -40,10 +40,10 @@ public:
 	TransformComponent* getTransform() { return mTransform.get(); }
 
 	bool addComponent(const std::string& name, std::unique_ptr<IComponent> component);
-	void updateComponents();
+	void updateComponents(Scene* scene);
 
-	virtual void init();
-	virtual void update();
+	virtual void init(Scene* scene);
+	void update(Scene* scene);
 	virtual void render() {} 
 
 protected:
@@ -66,20 +66,13 @@ public:
 	RenderableEntity(Mesh* mesh, 
 		Texture* texture, 
 		const std::string& tag = "untagged");
+
 	virtual ~RenderableEntity();
 
 	/// <summary>
 	/// Renders the renderable entity.
 	/// </summary>
-	virtual void render()
-	{
-		// Bind the texture to slot 0.
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mTexture->getDiffuseID());
-
-		// Render the mesth.
-		mMesh->render();
-	}
+	virtual void render();
 
 	Mesh* getMesh() { return mMesh; }
 	void setMesh(Mesh* mesh) { this->mMesh = mesh; }

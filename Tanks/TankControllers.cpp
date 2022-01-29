@@ -1,25 +1,30 @@
 #include "TankControllers.h"
 #include "Math/Math.h"
+#include "Tanks/Render/Scenes/TankGameScene.h"
 
-void BulletMovement::init(Entity* entity)
+void BulletMovement::init(Entity* entity, Scene* scene)
 {
 	entity->getTransform()->Scale = Vector3f(.4f, .4f, .4f);
+	entity->getTransform()->lookAt(entity->getTransform()->Position + mDirection * 5);
+
+	StaticLogger::instance.trace("{f} {f} {f}", mDirection.x, mDirection.y, mDirection.z);
 }
 
-void BulletMovement::update(Entity* entity)
+void BulletMovement::update(Entity* entity, Scene* scene)
 {
-	entity->getTransform()->Position += entity->getTransform()->Rotation.forward() * 
+	//entity->getTransform()->Position += entity->getTransform()->Rotation.forward() * 
+	entity->getTransform()->Position += mDirection *
 		GameManager::getUpdateDeltaTime() * bulletSpeed;
 }
 
-void TankControlBase::init(Entity* entity)
+void TankControlBase::init(Entity* entity, Scene* scene)
 {
 
 }
 
-void TankControlBase::update(Entity* entity)
+void TankControlBase::update(Entity* entity, Scene* scene)
 {
-	if (updateControl(entity))
+	if (updateControl(entity, scene))
 	{
 		currentTireTrackCoolDown -= GameManager::getUpdateDeltaTime();
 
@@ -34,8 +39,25 @@ void TankControlBase::update(Entity* entity)
 	}
 }
 
-void TankControlBase::shoot(Entity* entity)
+void TankControlBase::shoot(Entity* entity, Scene* scene)
 {
+	TankGameScene* gameScene = static_cast<TankGameScene*>(scene);
+	Camera3D* sceneCamera = gameScene->getCamera();
+
+	// Move the player target.
+	Vector2f mouseCoords((float)Mouse::getPosX(), (float)Mouse::getPosY());
+
+	mouseCoords = GenMath::screenCoordsToGLCoords(mouseCoords,
+		GameManager::getGameWindow()->getWidth(),
+		GameManager::getGameWindow()->getHeight());
+
+	Vector3f mouseWorldCoords = GenMath::unprojectScreenCoords(sceneCamera->getProjection(),
+		sceneCamera->getViewMatrix(), mouseCoords);
+
+	Vector3f toGroundVector = (sceneCamera->getTransform()->Position - mouseWorldCoords).retNormalized();
+	float groundCollisionTValue = -(sceneCamera->getTransform()->Position.y - 1) / toGroundVector.y;
+	Vector3f worldGroundPosition = sceneCamera->getTransform()->Position + toGroundVector * groundCollisionTValue;
+
 	if (bulletsRemaining)
 	{
 		bulletsRemaining--;
@@ -46,10 +68,16 @@ void TankControlBase::shoot(Entity* entity)
 				"Bullet");
 
 		bulletEntity->getTransform()->Rotation = entity->getTransform()->Rotation;
-		bulletEntity->getTransform()->Position = entity->getTransform()->Position +
-			(entity->getTransform()->Rotation.forward().normalize() * 2);
+		bulletEntity->getTransform()->Position = entity->getTransform()->Position;
 		bulletEntity->getTransform()->Position.y += 1;
-		bulletEntity->addComponent("Movement", std::make_unique<BulletMovement>());
+		bulletEntity->addComponent("Movement", 
+			std::make_unique<BulletMovement>(
+				(worldGroundPosition - bulletEntity->getTransform()->Position).retNormalized()));
+		bulletEntity->init(scene);
+
+		StaticLogger::instance.trace("{string}\n {string}", ((std::string)worldGroundPosition).c_str(),
+			((std::string)bulletEntity->getTransform()->Position).c_str());
+
 
 		GameManager::getScene()->addEntity(std::move(bulletEntity));
 	}
@@ -60,19 +88,17 @@ PlayerTankControl::PlayerTankControl()
 	mMoveBackward(Key::KEY_S),
 	mTurnLeft(Key::KEY_A),
 	mTurnRight(Key::KEY_D),
-	mShootBullet(Button::MOUSE_BUTTON_LEFT),
-	mUpdateBulletTracker()
+	mShootBullet(Button::MOUSE_BUTTON_LEFT)
 {
 }
 
-bool PlayerTankControl::updateControl(Entity* entity)
+bool PlayerTankControl::updateControl(Entity* entity, Scene* scene)
 {
 	mMoveForward.update();
 	mMoveBackward.update();
 	mTurnLeft.update();
 	mTurnRight.update();
 	mShootBullet.update();
-	mUpdateBulletTracker.update();
 
 	bool rotating = false;
 	bool moved = false;
@@ -104,17 +130,8 @@ bool PlayerTankControl::updateControl(Entity* entity)
 		moved = true;
 		currentSpeed *= reverseSpeedMultiplier;
 		entity->getTransform()->Position -=
-			entity->getTransform()->Rotation.forward() * 
+			entity->getTransform()->Rotation.forward() *
 			GameManager::getUpdateDeltaTime() * currentSpeed;
-	}
-
-	if (mUpdateBulletTracker)
-	{
-		Vector2f mouseCoords(Mouse::getPosX(), Mouse::getPosY());
-
-		mouseCoords = GenMath::screenCoordsToGLCoords(mouseCoords,
-			GameManager::getGameWindow()->getWidth(),
-			GameManager::getGameWindow()->getHeight());
 	}
 
 	// Spawn a bullet at the tank position towards the mouse.
@@ -122,16 +139,16 @@ bool PlayerTankControl::updateControl(Entity* entity)
 	// that position.
 	if (mShootBullet)
 	{
-		shoot(entity);
+		shoot(entity, scene);
 	}
 
 	return moved || rotating;
 }
 
-bool Enemy1TankControl::updateControl(Entity* entity)
+bool Enemy1TankControl::updateControl(Entity* entity, Scene* scene)
 {
 	bool moved = true;
-	entity->getTransform()->Position += entity->getTransform()->Rotation.forward() * 
+	entity->getTransform()->Position += entity->getTransform()->Rotation.forward() *
 		GameManager::getUpdateDeltaTime() * speed;
 	return moved;
 }

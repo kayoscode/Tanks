@@ -1,11 +1,11 @@
 #include "Entity.h"
 #include "Logger/StaticLogger.h"
 
-void Entity::updateComponents()
+void Entity::updateComponents(Scene* scene)
 {
 	for (auto i = mComponents.begin(); i != mComponents.end(); ++i)
 	{
-		i->second->update(this);
+		i->second->update(this, scene);
 	}
 }
 
@@ -13,7 +13,7 @@ bool Entity::addComponent(const std::string& name, std::unique_ptr<IComponent> c
 {
 	if (mComponents.find(name) == mComponents.end())
 	{
-		component->init(this);
+		//component->init(this);
 		mComponents[name] = std::move(component);
 		return true;
 	}
@@ -48,14 +48,19 @@ Entity::~Entity()
 
 }
 
-void Entity::init()
+void Entity::init(Scene* scene)
 {
-	mTransform->init(this);
+	mTransform->init(this, scene);
+
+	for (auto component = mComponents.begin(); component != mComponents.end(); ++component)
+	{
+		component->second->init(this, scene);
+	}
 }
 
-void Entity::update()
+void Entity::update(Scene* scene)
 {
-	updateComponents();
+	updateComponents(scene);
 }
 
 RenderableEntity::RenderableEntity(Mesh* mesh, 
@@ -69,4 +74,14 @@ RenderableEntity::RenderableEntity(Mesh* mesh,
 
 RenderableEntity::~RenderableEntity()
 {
+}
+
+void RenderableEntity::render()
+{
+	// Bind the texture to slot 0.
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mTexture->getDiffuseID());
+
+	// Render the mesth.
+	mMesh->render();
 }

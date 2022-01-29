@@ -255,7 +255,7 @@ void GameManager::executeRenderLoop()
         // Add a frame and output the FPS if applicable.
         if(mRenderTime.addFrame(1000000000)) 
         {
-            StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
+            //StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
         }
     }
 

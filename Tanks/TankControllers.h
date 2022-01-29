@@ -13,11 +13,19 @@
 /// </summary>
 class BulletMovement : public UpdateLoop
 {
-	void init(Entity* entity);
-	void update(Entity* entity);
+public:
+    BulletMovement(const Vector3f& direction)
+        :mDirection(direction)
+    {
+
+    }
+
+	void init(Entity* entity, Scene* scene);
+	void update(Entity* entity, Scene* scene);
 
 private:
     float bulletSpeed = 25;
+    Vector3f mDirection;
 };
 
 /// <summary>
@@ -30,9 +38,9 @@ public:
     TankControlBase() {  }
     virtual ~TankControlBase() { }
 
-	void init(Entity* entity);
+	void init(Entity* entity, Scene* scene);
 
-	void update(Entity* entity);
+	void update(Entity* entity, Scene* scene);
 
     /// <summary>
     /// The renderer is responsible for clearing this.
@@ -48,7 +56,7 @@ public:
     /// Returns true if the tank has moved or turned.
     /// </summary>
     /// <returns></returns>
-    virtual bool updateControl(Entity* entity) = 0;
+    virtual bool updateControl(Entity* entity, Scene* scene) = 0;
 
 private:
     std::vector<TransformComponent> mTireTracks;
@@ -61,14 +69,14 @@ protected:
     /// <summary>
     /// Shoots a bullet if possible.
     /// </summary>
-	void shoot(Entity* entity);
+	void shoot(Entity* entity, Scene* scene);
 
 	float speed = 7;
 	float rotationSpeed = 3;
 	float speedWhileRotatingMultiplier = 0.7f;
 	float reverseSpeedMultiplier = .5f;
 
-	int bulletsRemaining = 5;
+	int bulletsRemaining = 500;
 };
 
 class PlayerTankControl : public TankControlBase
@@ -76,7 +84,7 @@ class PlayerTankControl : public TankControlBase
 public:
 	PlayerTankControl();
 
-	bool updateControl(Entity* entity);
+	bool updateControl(Entity* entity, Scene* scene);
 
 private:
 	KeyDownInput mMoveForward;
@@ -84,7 +92,6 @@ private:
 	KeyDownInput mTurnLeft;
 	KeyDownInput mTurnRight;
 	MouseClickedInput mShootBullet;
-    MouseMoveInput mUpdateBulletTracker;
 };
 
 class Enemy1TankControl : public TankControlBase
@@ -92,5 +99,5 @@ class Enemy1TankControl : public TankControlBase
 public:
 	Enemy1TankControl() { }
     
-    bool updateControl(Entity* entity);
+    bool updateControl(Entity* entity, Scene* scene);
 };

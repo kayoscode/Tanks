@@ -8,6 +8,13 @@ void Scene::render()
 void Scene::init()
 {
 	this->onInit();
+
+	// Init each added entity.
+	for (int i = 0; i < mEntities.size(); ++i)
+	{
+		mEntities[i]->init(this);
+	}
+
 	mRenderPipeline->init(*this);
 }
 

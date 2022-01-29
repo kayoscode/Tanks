@@ -13,9 +13,9 @@ enum Button{
     MOUSE_BUTTON_4,
     MOUSE_BUTTON_5,
     MOUSE_BUTTON_6,
-    MOUSE_BUTTON_7,
-    MOUSE_BUTTON_LAST,
-    BUTTON_COUNT
+	MOUSE_BUTTON_7,
+	MOUSE_BUTTON_LAST,
+	BUTTON_COUNT
 };
 
 /**
@@ -23,157 +23,157 @@ enum Button{
  * @author Bryce Young 05/27/2021
  * */
 class Mouse {
-    public:
-        /**
-         * the current state of the mouse buttons
-         * */
-        static bool mouseState[BUTTON_COUNT];
+public:
+	/**
+	 * the current state of the mouse buttons
+	 * */
+	static bool mouseState[BUTTON_COUNT];
 
-        /**
-         * Each button is in a pressed state if it was clicked down this frame
-         * */
-        static bool pressedState[BUTTON_COUNT];
+	/**
+	 * Each button is in a pressed state if it was clicked down this frame
+	 * */
+	static bool pressedState[BUTTON_COUNT];
 
-        /**
-         * This is set to true, but only the frame after the mouse button was released
-         * */
-        static bool clickedState[BUTTON_COUNT];
+	/**
+	 * This is set to true, but only the frame after the mouse button was released
+	 * */
+	static bool clickedState[BUTTON_COUNT];
 
-        /**
-         * sets the x and y values for the mouse position
-         * */
-        static void updatePos(double x, double y) {
-            posdx = x - posx;
-            posdy = y - posy;
-            posx = x;
-            posy = y;
-        }
+	/**
+	 * sets the x and y values for the mouse position
+	 * */
+	static void updatePos(double x, double y) {
+		posdx = x - posx;
+		posdy = y - posy;
+		posx = x;
+		posy = y;
+	}
 
-        static void update() {
-            memset(pressedState, 0, sizeof(pressedState));
-            memset(clickedState, 0, sizeof(clickedState));
-        }
+	static void update() {
+		memset(pressedState, 0, sizeof(pressedState));
+		memset(clickedState, 0, sizeof(clickedState));
+	}
 
-        static double getPosX() {
-            return posx;
-        }
+	static double getPosX() {
+		return posx;
+	}
 
-        static double getPosY() {
-            return posy;
-        }
+	static double getPosY() {
+		return posy;
+	}
 
-        static double getScrollX() {
-            return scrollx;
-        }
+	static double getScrollX() {
+		return scrollx;
+	}
 
-        static double getScrollY() {
-            return scrolly;
-        }
+	static double getScrollY() {
+		return scrolly;
+	}
 
-        static double getPosDX() {
-            return posdx;
-        }
+	static double getPosDX() {
+		return posdx;
+	}
 
-        static double getPosDY() {
-            return posdy;
-        }
+	static double getPosDY() {
+		return posdy;
+	}
 
-        static double getScrollDX() {
-            return scrolldy;
-        }
+	static double getScrollDX() {
+		return scrolldy;
+	}
 
-        static double getScrollDY() {
-            return scrolldy;
-        }
+	static double getScrollDY() {
+		return scrolldy;
+	}
 
-        /**
-         * sets the x and y values for the mouse scroll
-         * */
-        static void updateScroll(double x, double y) {
-            scrolldx = x - scrollx;
-            scrolldy = y - scrolly;
-            scrollx = x;
-            scrolly = y;
-        }
+	/**
+	 * sets the x and y values for the mouse scroll
+	 * */
+	static void updateScroll(double x, double y) {
+		scrolldx = x - scrollx;
+		scrolldy = y - scrolly;
+		scrollx = x;
+		scrolly = y;
+	}
 
-        /**
-         * returns if a mouse button is up
-         * */
-        static bool isButtonUp(int button) {
-            if(button < BUTTON_COUNT) {
-                return !mouseState[button];
-            }
+	/**
+	 * returns if a mouse button is up
+	 * */
+	static bool isButtonUp(int button) {
+		if (button < BUTTON_COUNT) {
+			return !mouseState[button];
+		}
 
-            return false;
-        }
+		return false;
+	}
 
-        /**
-         * returns if a mouse button is down
-         * */
-        static bool isButtonDown(int button) {
-            if(button < BUTTON_COUNT) {
-                return mouseState[button];
-            }
+	/**
+	 * returns if a mouse button is down
+	 * */
+	static bool isButtonDown(int button) {
+		if (button < BUTTON_COUNT) {
+			return mouseState[button];
+		}
 
-            return false;
-        }
+		return false;
+	}
 
-        /**
-         * Returns if the button was released this frame
-         * */
-        static bool isButtonClicked(int button) {
-            if(button < BUTTON_COUNT) {
-                return clickedState[button];
-            }
+	/**
+	 * Returns if the button was released this frame
+	 * */
+	static bool isButtonClicked(int button) {
+		if (button < BUTTON_COUNT) {
+			return clickedState[button];
+		}
 
-            return false;
-        }
+		return false;
+	}
 
-        /**
-         * updates the state of a mouse button
-         * */
-        static void pressButton(int button) {
-            if(button < BUTTON_COUNT) {
-                if(!mouseState[button]) {
-                    pressedState[button] = true;
-                }
+	/**
+	 * updates the state of a mouse button
+	 * */
+	static void pressButton(int button) {
+		if (button < BUTTON_COUNT) {
+			if (!mouseState[button]) {
+				pressedState[button] = true;
+			}
 
-                mouseState[button] = true;
-            }
-        }
+			mouseState[button] = true;
+		}
+	}
 
-        /**
-         * Udpates the state of a mouse button
-         * */
-        static void releaseButton(int button) {
-            if(button < BUTTON_COUNT) {
-                clickedState[button] = true;
-                mouseState[button] = false;
-            }
-        }
+	/**
+	 * Udpates the state of a mouse button
+	 * */
+	static void releaseButton(int button) {
+		if (button < BUTTON_COUNT) {
+			clickedState[button] = true;
+			mouseState[button] = false;
+		}
+	}
 
-        /**
-         * Returns whether the button is pressed or not
-         * Resets at the end of the frame
-         * */
-        static bool isButtonPressed(int button) {
-            if(button < BUTTON_COUNT) {
-                return pressedState[button];
-            }
+	/**
+	 * Returns whether the button is pressed or not
+	 * Resets at the end of the frame
+	 * */
+	static bool isButtonPressed(int button) {
+		if (button < BUTTON_COUNT) {
+			return pressedState[button];
+		}
 
-            return false;
-        }
+		return false;
+	}
 
-    private:
-        static double posx;
-        static double posy;
-        static double posdx;
-        static double posdy;
+private:
+	static double posx;
+	static double posy;
+	static double posdx;
+	static double posdy;
 
-        static double scrollx;
-        static double scrolly;
-        static double scrolldx;
-        static double scrolldy;
+	static double scrollx;
+	static double scrolly;
+	static double scrolldx;
+	static double scrolldy;
 };
 
 #endif

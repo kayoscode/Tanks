@@ -9,6 +9,7 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Line.h"
+#include "Plane.h"
 
 class GenMath
 {
@@ -160,5 +161,47 @@ public:
 		pos = pos * (1 / pos.w);
 
 		return pos.xy();
+	}
+
+	/// <summary>
+	/// Finds the point in 3D space where a plane and a line intersect.
+	/// </summary>
+	/// <param name="plane"></param>
+	/// <param name="line"></param>
+	/// <returns></returns>
+	static Vector3f findIntersectionPoint(const Planef& plane, const Linef& line)
+	{
+		// Create matrix to represent the plane.
+		Matrix44f planeTranslation;
+		planeTranslation.translate(plane.Position);
+
+		Quaternionf planeRotation;
+		planeRotation.lookRotation(plane.Normal % Vector3f(0, 0, -1), plane.Normal);
+
+		Matrix44f planeMatrix = (planeTranslation * planeRotation.toMatrix());
+		Matrix44f inversePlaneMatrix = inversePlaneMatrix.inverse();
+
+		// Put line into plane space.
+		Linef placeSpaceLine((inversePlaneMatrix * Vector4f(line.Start, 1)).xyz(),
+			(inversePlaneMatrix * Vector4f(line.Direction, 0)).xyz(), line.Length);
+
+		// Solve for y = 0 by solving for t.
+		// t = -yi/dy where dy in the set of reals.
+
+		if(!isnan(placeSpaceLine.Direction.y) && 
+			placeSpaceLine.Direction.y != 0 && 
+			!isinf(placeSpaceLine.Direction.y))
+		{
+			float t = -placeSpaceLine.Start.y / placeSpaceLine.Direction.y;
+			Vector3f planeSpacePosition = placeSpaceLine.positionAt(t);
+
+			return (planeMatrix * planeSpacePosition).xyz();
+		}
+		else
+		{
+			// We could not come up with a valid answer because the line and plane
+			// were parallel.
+			return Vector3f(INFINITY, INFINITY, INFINITY);
+		}
 	}
 };

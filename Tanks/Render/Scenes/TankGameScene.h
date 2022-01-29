@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "Engine/GameManager.h"
-#include "Render Engine/Scene.h"
 #include "Render Engine/Camera.h"
 
 #include "Tanks/TankControllers.h"
@@ -18,6 +17,9 @@ public:
 
 	virtual void update();
 
+	Camera3D* getCamera() { return mCamera; }
+
 protected:
 	void onInit();
+	Camera3D* mCamera;
 };
