@@ -123,6 +123,29 @@ class Quaternion
 
             return matrix;
         }
+        
+        Quaternion<T>& invert()
+        {
+            T mag = length();
+
+            x = x / mag;
+            y = -y / mag;
+            z = -z / mag;
+            w = -w / mag;
+            return *this;
+        }
+
+        Quaternion<T> inverse()
+        {
+            Quaternion<T> ret;
+            T mag = length();
+
+            ret.x = x / mag;
+            ret.y = -y / mag;
+            ret.z = -z / mag;
+            ret.w = -w / mag;
+            return ret;
+        }
 
         Quaternion<T>& setToAxisAngle(const Vector3<T>& axis, T angle) {
             Matrix44<T> rot;
@@ -257,7 +280,7 @@ class Quaternion
             Quaternion<T> result;
 
             T dot = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
-            T blendI = 1.0f - blend;
+            T blendI = 1.0 - blend;
 
             if (dot < 0)
             {

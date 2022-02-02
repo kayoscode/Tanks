@@ -33,3 +33,18 @@ void TransformComponent::lookAt(const Vector3f& point)
 
 	Rotation.lookRotation(forward, up);
 }
+
+Quaternionf TransformComponent::getLookAtRotation(const Vector3f& point)
+{
+	Vector3f forward(Position - point);
+	forward.normalize();
+
+	Vector3f right = forward % Vector3f(0, 1, 0);
+	Vector3f up = right % forward;
+
+	Quaternionf rotation;
+	rotation.lookRotation(forward, up);
+	return rotation;
+}
+
+

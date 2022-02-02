@@ -113,6 +113,7 @@ void RenderTankTracks::execute(Scene& scene)
 	// Render the tank tracks.
 	glDisable(GL_DEPTH_TEST);
 	std::vector<Entity*> tanks = scene.getEntitiesWithTag("Tank");
+	tanks.push_back(scene.getEntityWithTag("Player"));
 	for (auto currentTank : tanks)
 	{
 		TankControlBase* tankControlScript = static_cast<TankControlBase*>(currentTank->getComponent("Movement"));
