@@ -35,7 +35,8 @@ private:
 class TankControlBase : public UpdateLoop
 {
 public:
-    TankControlBase() {  }
+    TankControlBase() 
+    {  }
     virtual ~TankControlBase() { }
 
 	void init(Entity* entity, Scene* scene);
@@ -58,25 +59,31 @@ public:
     /// <returns></returns>
     virtual bool updateControl(Entity* entity, Scene* scene) = 0;
 
-private:
+protected:
     std::vector<TransformComponent> mTireTracks;
 
     // Time between tire tracks
     float tireTracksCoolDown = .12f;
     float currentTireTrackCoolDown = 0;
+    float shootMoveCooldown = .25f;
+    float currentShootMoveCooldown = 0;
+    float shootCooldown = .15;
+    float currentShootCooldown = 0;
+    float mCurrentTurnFactor = 0;
+    Quaternionf mRotationStartingTurn;
+    Quaternionf mRotationLookDirection;
 
-protected:
     /// <summary>
     /// Shoots a bullet if possible.
     /// </summary>
-	void shoot(Entity* entity, Scene* scene);
+	void shoot(Entity* entity, Scene* scene, const Vector3f& position);
+    void setMoveDirection(Entity* entity, Scene* scene, const Quaternionf& newRotation);
 
 	float speed = 7;
-	float rotationSpeed = 3;
-	float speedWhileRotatingMultiplier = 0.7f;
-	float reverseSpeedMultiplier = .5f;
+	float rotationSpeed = 4;
 
 	int bulletsRemaining = 500;
+    Entity* mPlayerEntity;
 };
 
 class PlayerTankControl : public TankControlBase
@@ -87,17 +94,28 @@ public:
 	bool updateControl(Entity* entity, Scene* scene);
 
 private:
-	KeyDownInput mMoveForward;
-	KeyDownInput mMoveBackward;
-	KeyDownInput mTurnLeft;
-	KeyDownInput mTurnRight;
-	MouseClickedInput mShootBullet;
+    Vector3f getCurrentWorldMouseCoords(Scene* scene);
+
+	MousePressedInput mShootBullet;
+    KeyDownInput mUpDir;
+    KeyDownInput mDownDir;
+    KeyDownInput mLeftDir;
+    KeyDownInput mRightDir;
+
+    Quaternionf mUpRot;
+    Quaternionf mDownRot;
+    Quaternionf mRightRot;
+    Quaternionf mLeftRot;
 };
 
 class Enemy1TankControl : public TankControlBase
 {
 public:
-	Enemy1TankControl() { }
+	Enemy1TankControl() 
+    { 
+        shootCooldown *= 5;
+    }
     
     bool updateControl(Entity* entity, Scene* scene);
+private:
 };

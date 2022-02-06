@@ -46,6 +46,8 @@ public:
 	/// </summary>
 	/// <param name="point"></param>
 	void lookAt(const Vector3f& point);
+	
+	Quaternionf getLookAtRotation(const Vector3f& point);
 
 	Vector3f Position;
 	Vector3f Scale;

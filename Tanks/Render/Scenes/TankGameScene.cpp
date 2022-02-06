@@ -29,19 +29,22 @@ void TankGameScene::onInit()
     std::unique_ptr<RenderableEntity> playerEntity =
         std::make_unique<RenderableEntity>(GameManager::Resources.MeshResources.getRegistry(MODEL_TANK),
             GameManager::Resources.TextureResources.getRegistry(TEXTURE_PLAYER),
-            "Tank");
+            "Player");
     playerEntity->getTransform()->Scale = Vector3f(.5, .5, .5);
     playerEntity->addComponent("Movement", std::make_unique<PlayerTankControl>());
     addEntity(std::move(playerEntity));
 
-    std::unique_ptr<RenderableEntity> enemyEntity =
-        std::make_unique<RenderableEntity>(GameManager::Resources.MeshResources.getRegistry(MODEL_TANK),
-            GameManager::Resources.TextureResources.getRegistry(TEXTURE_ENEMY1),
-            "Tank");
-    enemyEntity->getTransform()->Scale = Vector3f(.5, .5, .5);
-    enemyEntity->getTransform()->Position = Vector3f(15, 0, 15);
-    enemyEntity->addComponent("Movement", std::make_unique<Enemy1TankControl>());
-    addEntity(std::move(enemyEntity));
+    for (int i = 0; i < 1; i++)
+    {
+		std::unique_ptr<RenderableEntity> enemyEntity =
+			std::make_unique<RenderableEntity>(GameManager::Resources.MeshResources.getRegistry(MODEL_TANK),
+				GameManager::Resources.TextureResources.getRegistry(TEXTURE_ENEMY1),
+				"Tank");
+		enemyEntity->getTransform()->Scale = Vector3f(.5, .5, .5);
+		enemyEntity->getTransform()->Position = Vector3f((rand() % 60) - 30, 0, (rand() % 60) - 30);
+		enemyEntity->addComponent("Movement", std::make_unique<Enemy1TankControl>());
+		addEntity(std::move(enemyEntity));
+    }
 
     // Add the floor background for perspective.
     std::unique_ptr<RenderableEntity> floorEntity =
