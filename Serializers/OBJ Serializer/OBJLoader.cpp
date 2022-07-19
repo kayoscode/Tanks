@@ -209,7 +209,7 @@ bool ModelLoader::loadOBJ(const std::string& filePath, IndexedModel& model) {
 
     // Finally copy over the indices.
     model.indexCount = (int)indices.size();
-    for(int i = 0; i < indices.size(); ++i) {
+    for(size_t i = 0; i < indices.size(); ++i) {
         model.indices[i] = indices[i];
     }
 

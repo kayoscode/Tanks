@@ -179,7 +179,7 @@ public:
 		planeRotation.lookRotation(plane.Normal % Vector3f(0, 0, -1), plane.Normal);
 
 		Matrix44f planeMatrix = (planeTranslation * planeRotation.toMatrix());
-		Matrix44f inversePlaneMatrix = inversePlaneMatrix.inverse();
+		Matrix44f inversePlaneMatrix = planeMatrix.inverse();
 
 		// Put line into plane space.
 		Linef placeSpaceLine((inversePlaneMatrix * Vector4f(line.Start, 1)).xyz(),

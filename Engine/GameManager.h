@@ -158,9 +158,9 @@ public:
 	/**
 	 * A constant for the location of the res folder
 	 * */
-	static const std::string& resPath() 
+	static const std::string resPath(const std::string& resourceName) 
 	{
-		return resFolder;
+		return resFolder + resourceName;
 	}
 
 	/**

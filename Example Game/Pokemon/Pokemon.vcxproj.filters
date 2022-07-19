@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{62a2fb7e-8a76-4e2a-94d6-56defed0d54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Pokemon">
+      <UniqueIdentifier>{9cca350a-cc3c-43b7-97a0-97e8d5bc3682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pokemon">
+      <UniqueIdentifier>{b2274052-149f-47f4-9ae7-22ec4f790fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{0a4f0dcd-73de-488b-a324-21d2aae14459}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ResourceLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameScene.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\GUIShader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\ModelShader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\SceneRenderPipeline.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Evos.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="Natures.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="Pokedex.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="Sim.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\TextShader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMove.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+    <ClInclude Include="defs.h">
+      <Filter>Header Files\Pokemon</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\GUIShader.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\ModelShader.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\SceneRenderPipeline.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameScene.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Pokedex.cpp">
+      <Filter>Source Files\Pokemon</Filter>
+    </ClCompile>
+    <ClCompile Include="Natures.cpp">
+      <Filter>Source Files\Pokemon</Filter>
+    </ClCompile>
+    <ClCompile Include="Sim.cpp">
+      <Filter>Source Files\Pokemon</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Pokemon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

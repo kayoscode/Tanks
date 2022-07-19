@@ -13,6 +13,7 @@
 #define CBRK_CODE 3
 #define COLON_CODE 4
 #define COMMA_CODE 5
+#define BOOL_CODE 6
 
 class JsonLexer {
     public:
@@ -32,6 +33,7 @@ class JsonLexer {
             Number,
             Float,
             String,
+            Boolean,
             Undefined
         };
 
@@ -40,7 +42,7 @@ class JsonLexer {
             TokenType type;
             int code;
 
-            void print() {
+            void print() const {
                 char tmp = *end;
                 *end = 0;
                 std::cout << begin << "\n";

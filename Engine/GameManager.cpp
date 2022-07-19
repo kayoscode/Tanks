@@ -96,7 +96,7 @@ void GameManager::createWindow(const std::string& settingsPath) {
     JsonFile file(settingsPath);
 
     if(!file.isLoadSuccessful()) {
-        StaticLogger::instance.warning("Settings file provided but failed to load");
+        StaticLogger::instance.warning("Settings file provided but failed to load: {s}", settingsPath.c_str());
         createWindow(windowConf);
         return;
     }
@@ -238,7 +238,7 @@ void GameManager::executeUpdateLoop()
 void GameManager::executeRenderLoop() 
 {
     mMainWindow->setAsCurrent();
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -255,7 +255,7 @@ void GameManager::executeRenderLoop()
         // Add a frame and output the FPS if applicable.
         if(mRenderTime.addFrame(1000000000)) 
         {
-            StaticLogger::instance.trace("Frames per second: {int}", mRenderTime.getFPS());
+            StaticLogger::instance.trace("FPS: {int}", mRenderTime.getFPS());
         }
     }
 

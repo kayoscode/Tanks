@@ -1,0 +1,12 @@
+{
+    "window": {
+        "width": 1920,
+        "height": 1080,
+        "xpos": 0,
+        "ypos": 0,
+        "title": "Tanks!",
+        "fullscreen": "false",
+        "center": "true",
+		"vsync": "true"
+    }
+}

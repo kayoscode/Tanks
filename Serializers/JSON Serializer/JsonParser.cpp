@@ -39,6 +39,16 @@ static void loadJsonValue(JsonLexer& lexer, JsonLexer::Token* token, JsonValue* 
         lexer.getNextToken(*token);
         return;
     }
+    else if (token->type == JsonLexer::TokenType::Boolean) {
+        int value = 0;
+
+        if (*token->begin == 't') {
+            value = 1;
+        }
+        newValue->updateValue(value);
+        lexer.getNextToken(*token);
+        return;
+    }
     else if(token->type == JsonLexer::TokenType::String) {
         std::string value(token->begin, token->end);
 
@@ -63,8 +73,6 @@ static void loadJsonValue(JsonLexer& lexer, JsonLexer::Token* token, JsonValue* 
         JsonObject* newObject = new JsonObject();
         loadJsonObject(lexer, token, newObject);
         newValue->updateValue(newObject);
-
-        lexer.getNextToken(*token);
         return;
     }
     else if(token->code == OBRK_CODE) {
@@ -132,7 +140,7 @@ static void loadJsonArray(JsonLexer& lexer, JsonLexer::Token* token, JsonArray* 
 static void loadJsonObject(JsonLexer& lexer, JsonLexer::Token* token, JsonObject* obj) {
     lexer.getNextToken(*token);
 
-    while(token->begin != nullptr && token->end != nullptr) {
+    while(token->begin != nullptr && token->end != nullptr && token->code != CBRC_CODE) {
         if(token->code == COMMA_CODE) {
             lexer.getNextToken(*token);
 
@@ -151,15 +159,13 @@ static void loadJsonObject(JsonLexer& lexer, JsonLexer::Token* token, JsonObject
                 delete newValue;
             }
         }
-        else if(token->code == CBRC_CODE) {
-            lexer.getNextToken(*token);
-            return;
-        }
         else {
             std::cout << "Comma or string expected!\n";
             lexer.getNextToken(*token);
         }
     }
+
+    lexer.getNextToken(*token);
 }
 
 void JsonParser::parseJson(JsonValue* value) {

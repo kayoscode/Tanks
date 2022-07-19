@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <mutex>
 
 #include "Render Engine/RenderPipeline.h"
 #include "Render Engine/Camera.h"
@@ -29,7 +30,10 @@ public:
 	/// <param name="entity"></param>
 	void addEntity(std::unique_ptr<Entity> entity)
 	{
+		entity->init(this);
+		EntitiesMutex.lock();
 		mEntities.push_back(std::move(entity));
+		EntitiesMutex.unlock();
 	}
 
 	/// <summary>
@@ -39,15 +43,23 @@ public:
 	/// <returns></returns>
 	Entity* getEntityWithTag(const std::string& tag)
 	{
-		for (int i = 0; i < mEntities.size(); ++i)
+		Entity* foundEntity = nullptr;
+		size_t entityCount = mEntities.size();
+
+		EntitiesMutex.lock();
+
+		for (int i = 0; i < entityCount; ++i)
 		{
 			if (mEntities[i]->getTag() == tag)
 			{
-				return mEntities[i].get();
+				foundEntity = mEntities[i].get();
+				break;
 			}
 		}
 
-		return nullptr;
+		EntitiesMutex.unlock();
+
+		return foundEntity;
 	}
 
 	/// <summary>
@@ -59,7 +71,10 @@ public:
 	{
 		std::vector<Entity*> entities;
 
-		for (int i = 0; i < mEntities.size(); ++i)
+		EntitiesMutex.lock();
+
+		size_t entityCount = mEntities.size();
+		for (int i = 0; i < entityCount; ++i)
 		{
 			if (mEntities[i]->getTag() == tag)
 			{
@@ -67,6 +82,7 @@ public:
 			}
 		}
 
+		EntitiesMutex.unlock();
 		return entities;
 	}
 
@@ -76,7 +92,7 @@ public:
 
 	virtual ~Scene() {}
 
-	std::vector<std::unique_ptr<Entity>>& getEntities()
+	const std::vector<std::unique_ptr<Entity>>& getEntities()
 	{
 		return mEntities;
 	}
@@ -86,5 +102,8 @@ protected:
 
 	std::unique_ptr<RenderPipeline> mRenderPipeline;
 	std::vector<std::unique_ptr<Entity>> mEntities;
+
+public:
+	std::mutex EntitiesMutex;
 };
 

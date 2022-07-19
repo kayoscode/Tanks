@@ -60,6 +60,11 @@ class Camera : public Entity
  * */
 class Camera3D : public Camera {
     public:
+        Camera3D()
+            :fov(1), zNear(.01), zFar(1000) {
+
+        }
+
         /// <summary>
         /// Calculates the view matrix from a rotation and position.
         /// </summary>

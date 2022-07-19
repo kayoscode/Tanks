@@ -178,9 +178,6 @@
     <ProjectReference Include="..\Math\Math.vcxproj">
       <Project>{ed230649-c8e0-42c6-9d12-476c3d032ae5}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ScriptEngine\ScriptEngine.vcxproj">
-      <Project>{9e853ddd-2025-4e2f-9306-e64653dc3f3a}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Serializers\Serializers.vcxproj">
       <Project>{3d37b536-91f3-4d7c-8f58-ae4cc2824a01}</Project>
     </ProjectReference>
