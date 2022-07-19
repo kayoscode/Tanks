@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Serializers/JSON Serializer/JsonFile.h"
+#include "Logger/StaticLogger.h"
 #include "defs.h"
 
 #include <string>
@@ -21,7 +22,7 @@ constexpr double DamageTakenToMultiplier(int damageTaken) {
 		return 0;
 	}
 
-	std::cout << "Invalid dmg modifier\n";
+	StaticLogger::instance.warning("Invalid dmg modifier {d}", damageTaken);
 	return -1;
 }
 

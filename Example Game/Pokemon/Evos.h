@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Serializers/JSON Serializer/JsonFile.h"
+#include "Logger/StaticLogger.h"
 
 namespace Pkmn {
 	class EvoTypeBase {
@@ -206,7 +207,7 @@ namespace Pkmn {
 						return new EvoTypeUseItem(evoItem);
 					}
 					// Otherwise, we have a problem.
-					std::cout << "Use item unspecified\n";
+					StaticLogger::instance.warning("Use item unspecified");
 				}
 				else if (evoType == "levelHold") {
 					if (pokemonNode->nodeExists(EvoTypeLevelHold::GetConditionProperty())) {
@@ -216,7 +217,7 @@ namespace Pkmn {
 						return new EvoTypeLevelHold(evoItem);
 					}
 					// Otherwise, we have a problem.
-					std::cout << "Use item unspecified\n";
+					StaticLogger::instance.warning("Use item unspecified");
 				}
 				else if (evoType == "levelMove") {
 					if (pokemonNode->nodeExists(EvoTypeLevelMove::GetConditionProperty())) {
@@ -232,6 +233,7 @@ namespace Pkmn {
 				else {
 					// We have a different type of levelType which I didn't see.
 					std::cout << "Unhandled level type: " << evoType << "\n";
+					StaticLogger::instance.warning("Unhandled level type: {s}", evoType.c_str());
 				}
 			}
 

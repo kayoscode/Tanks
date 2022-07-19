@@ -1,4 +1,5 @@
 #include "Pokedex.h"
+#include "Logger/StaticLogger.h"
 
 constexpr int Generation = 8;
 
@@ -168,7 +169,8 @@ namespace Pkmn {
 						}
 						break;
 					default: 
-						std::cout << "Undefined move type: " << data.Name << ": " << moveType << " " << moves.first << "\n";
+						StaticLogger::instance.warning("Undefined move type: {s}: '{c}' {s}",
+							data.Name.c_str(), moveType, moves.first.c_str());
 						break;
 					}
 				}
@@ -213,7 +215,6 @@ namespace Pkmn {
 			pokedex[pkmn.first] = pkmnData;
 		}
 
-		auto t = pokedex["magmortar"];
 		return pokedex;
 	}
 }
