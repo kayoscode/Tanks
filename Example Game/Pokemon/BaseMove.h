@@ -195,6 +195,18 @@ namespace Pkmn {
 	private:
 	};
 
+	/// <summary>
+	/// A move that uses smart target between attacks.
+	/// For now, this only applies to dragondarts.
+	/// </summary>
+	class SmartTargetMove : public MoveBase {
+	public:
+		SmartTargetMove(JsonObject* moveData) : MoveBase(moveData) {
+
+		}
+	protected:
+	};
+
 	class MoveLoader {
 	public:
 		static std::map<std::string, std::shared_ptr<MoveBase>>
@@ -203,6 +215,7 @@ namespace Pkmn {
 
 	class MoveFactory {
 	public:
-		static std::shared_ptr<MoveBase> CreateMoveData(JsonObject* move);
+		static std::shared_ptr<MoveBase> 
+			CreateMoveData(std::pair<const std::string, JsonValue*>& move);
 	};
 }

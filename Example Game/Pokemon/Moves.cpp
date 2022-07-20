@@ -5,7 +5,7 @@ namespace Pkmn {
 	std::map<std::string, eMoveCategory> StringToCategory{
 		{ "Status", eMoveCategory::Status },
 		{ "Physical", eMoveCategory::Physical },
-		{ "Special", eMoveCategory::Status },
+		{ "Special", eMoveCategory::Special },
 	};
 
 	std::map<std::string, eMoveTarget> StringToTarget{
@@ -60,16 +60,24 @@ namespace Pkmn {
 
 		for (auto move : moveObject->getKeys()) {
 			std::shared_ptr<MoveBase> moveData =
-				MoveFactory::CreateMoveData(move.second->objectValue);
+				MoveFactory::CreateMoveData(move);
 
 			moves[move.first] = moveData;
 		}
 
+		auto v = moves["dragondarts"];
 		return moves;
 	}
 
-	std::shared_ptr<MoveBase> MoveFactory::CreateMoveData(JsonObject* data) {
-		return std::make_shared<MoveBase>(data);
+	std::shared_ptr<MoveBase> MoveFactory::CreateMoveData(std::pair<const std::string, 
+		JsonValue*>& data) 
+	{
+		// Handle all special moves.
+		if (data.first == "dragondarts") {
+			return std::make_shared<SmartTargetMove>(data.second->objectValue);
+		}
+
+		return std::make_shared<MoveBase>(data.second->objectValue);
 	}
 
 	MoveBase::MoveBase(JsonObject* moveData) 
@@ -143,6 +151,20 @@ namespace Pkmn {
 			JsonArray* recoilData = moveData->lookupNode("recoil")->arrayValue;
 			mRecoilFactor = (double)recoilData->get(0)->numberValue / 
 				recoilData->get(1)->numberValue;
+		}
+
+		// Load multihit data.
+		if (moveData->nodeExists("multihit")) {
+			JsonValue* multihit = moveData->lookupNode("multihit");
+
+			if (multihit->type == JsonValueType::Array) {
+				mMinHits = multihit->arrayValue->get(0)->numberValue;
+				mMaxHits = multihit->arrayValue->get(1)->numberValue;
+			}
+			else {
+				mMinHits = multihit->numberValue;
+				mMaxHits = mMinHits;
+			}
 		}
 
 		// Load primary and secondary effects.
