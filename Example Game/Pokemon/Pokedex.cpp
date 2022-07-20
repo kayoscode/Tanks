@@ -150,6 +150,8 @@ namespace Pkmn {
 					case 'T':
 						// Tutor moves also don't have an impact on this game since I make my own move tutors.
 					case 'S':
+						// TBH, I have no clue what R means, but ok - it's not used much.
+					case 'R':
 						// S means event move. For our purposes, event moves do not matter either.
 						break;
 					case 'M':

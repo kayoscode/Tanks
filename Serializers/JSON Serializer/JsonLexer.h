@@ -14,6 +14,7 @@
 #define COLON_CODE 4
 #define COMMA_CODE 5
 #define BOOL_CODE 6
+#define NULL_CODE 7
 
 class JsonLexer {
     public:
@@ -34,6 +35,7 @@ class JsonLexer {
             Float,
             String,
             Boolean,
+            Null,
             Undefined
         };
 

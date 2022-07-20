@@ -95,6 +95,9 @@
     <ClCompile Include="Sim.cpp">
       <Filter>Source Files\Pokemon</Filter>
     </ClCompile>
+    <ClCompile Include="Moves.cpp">
+      <Filter>Source Files\Pokemon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Pokemon.rc">

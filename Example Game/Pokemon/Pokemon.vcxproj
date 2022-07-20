@@ -35,6 +35,7 @@
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Moves.cpp" />
     <ClCompile Include="Natures.cpp" />
     <ClCompile Include="Pokedex.cpp" />
     <ClCompile Include="Render\GUIShader.cpp" />
