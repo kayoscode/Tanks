@@ -97,13 +97,15 @@ namespace Pkmn {
 	/// Handles secondary effects of moves such as boosts and status.
 	/// Handles the target as well.
 	/// </summary>
-	class MoveEffect {
+	class MoveEffectBase {
 	public:
-		MoveEffect() {
-
+		MoveEffectBase(bool targetSelf, int chance) :
+			mTargetSelf(targetSelf),
+			mChance(chance)
+		{
 		}
 
-		virtual ~MoveEffect() {
+		virtual ~MoveEffectBase() {
 
 		}
 
@@ -118,12 +120,23 @@ namespace Pkmn {
 	protected:
 		// Can be either Self or Normal. Normal means it affects the target 
 		// Of the move, and Self means it affects the user.
-		eMoveTarget mTarget = eMoveTarget::Normal;
+		bool mTargetSelf = false;
 		int mChance = 0;
 	};
 
-	class BoostMoveEffect : public MoveEffect {
+	class BoostMoveEffect : public MoveEffectBase {
 	public:
+		BoostMoveEffect(bool targetSelf, int chance,
+			int atkBoost, int spaBoost, int defBoost, int spdBoost, int speBoost)
+			: MoveEffectBase(targetSelf, chance)
+		{
+			mBoostEffects[eStats::Attack] = atkBoost;
+			mBoostEffects[eStats::SpecialAttack] = spaBoost;
+			mBoostEffects[eStats::Defense] = defBoost;
+			mBoostEffects[eStats::SpecialDefense] = spdBoost;
+			mBoostEffects[eStats::Speed] = speBoost;
+		}
+
 		void OnHit(Mon& target, const Mon& source) {
 			// foreach boost effect, apply the modifier.
 		}
@@ -131,14 +144,57 @@ namespace Pkmn {
 		signed char mBoostEffects[eStats::None] = { 0 };
 	};
 
-	class StatusMoveEffect : public MoveEffect {
+	class StatusMoveEffect : public MoveEffectBase {
 	public:
+		StatusMoveEffect(bool targetSelf, int chance, const std::string& status) : 
+			MoveEffectBase(targetSelf, chance),
+			mStatus(status)
+		{
+		}
+
 		void OnHit(Mon& target, const Mon& source) {
 			// target.trySetStatus(status, source);
 		}
 	private:
 		// For now, let's just store a string because I don't have an enumeration setup for status yet.
-		std::string status;
+		std::string mStatus;
+	};
+
+	class VolatileStatusEffect : public MoveEffectBase {
+	public:
+		VolatileStatusEffect(bool targetSelf, int chance, const std::string& status) : 
+			MoveEffectBase(targetSelf, chance),
+			mVolatileStatus(status)
+		{
+		}
+
+		void OnHit(Mon& target, const Mon& source) {
+
+		}
+
+	protected:
+		std::string mVolatileStatus;
+	};
+
+	class SideConditionEffect : public MoveEffectBase {
+	public:
+		SideConditionEffect(bool targetSelf, int chance, const std::string& sideCondition) 
+			: MoveEffectBase(targetSelf, chance),
+			mSideCondition(sideCondition)
+		{
+		}
+
+		void OnHit(Mon& target, const Mon& source) {
+
+		}
+
+	protected:
+		std::string mSideCondition;
+	};
+
+	class MoveEffectFactory {
+	public:
+		static std::shared_ptr<MoveEffectBase> LoadMoveEffect(JsonObject* moveEffectRoot);
 	};
 
 	/// <summary>
@@ -146,7 +202,10 @@ namespace Pkmn {
 	/// </summary>
 	class MoveBase {
 	public:
-		MoveBase(JsonObject* moveData);
+		MoveBase(JsonObject* moveData) {
+			LoadBaseData(moveData);
+			LoadEffectData(moveData);
+		}
 
 		~MoveBase() {
 		}
@@ -167,6 +226,9 @@ namespace Pkmn {
 		}
 
 	protected:
+		void LoadBaseData(JsonObject* moveData);
+		void LoadEffectData(JsonObject* moveData);
+
 		int mMoveNumber = 0;
 
 		eMoveCategory mCategory = eMoveCategory::Status;
@@ -188,11 +250,11 @@ namespace Pkmn {
 		double mRecoilFactor = 0;
 		int mMinHits = 1;
 		int mMaxHits = 1;
+		bool mIgnoreImmunity = false;
+		bool mWillCrit = false;
 
-		std::shared_ptr<MoveEffect> mPrimaryEffect;
-		std::vector<std::shared_ptr<MoveEffect>> mSecondaryEffects;
-
-	private:
+		std::shared_ptr<MoveEffectBase> mPrimaryEffect;
+		std::vector<std::shared_ptr<MoveEffectBase>> mSecondaryEffects;
 	};
 
 	/// <summary>

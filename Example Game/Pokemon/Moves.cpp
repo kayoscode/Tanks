@@ -65,7 +65,11 @@ namespace Pkmn {
 			moves[move.first] = moveData;
 		}
 
-		auto v = moves["dragondarts"];
+		// TODO: this is still not working properly. Each move needs to have multiple
+		// primary statuses. One for each possible type (only if it includes it in the structure).
+		auto v = moves["swagger"];
+		v = moves["bonerush"];
+		v = moves["bounce"];
 		return moves;
 	}
 
@@ -80,13 +84,13 @@ namespace Pkmn {
 		return std::make_shared<MoveBase>(data.second->objectValue);
 	}
 
-	MoveBase::MoveBase(JsonObject* moveData) 
-	{
+	void MoveBase::LoadBaseData(JsonObject* moveData) {
 		mMoveNumber = moveData->lookupNode("num")->numberValue;
 		mName = moveData->lookupNode("name")->stringValue;
 		mPP = moveData->lookupNode("pp")->numberValue;
 		mPriority = moveData->lookupNode("priority")->numberValue;
 		mBasePower = moveData->lookupNode("basePower")->numberValue;
+		mType = moveData->lookupNode("type")->stringValue;
 
 		// Load move category.
 		std::string moveCategory = moveData->lookupNode("category")->stringValue;
@@ -167,6 +171,98 @@ namespace Pkmn {
 			}
 		}
 
-		// Load primary and secondary effects.
+		if (moveData->nodeExists("ignoreImmunity")) {
+			if (moveData->lookupNode("ignoreImmunity")->type ==
+				JsonValueType::Boolean) 
+			{
+				mIgnoreImmunity = moveData->lookupNode("ignoreImmunity")->booleanValue;
+			}
+		}
+
+		if (moveData->nodeExists("willCrit")) {
+			mWillCrit = true;
+		}
+	}
+
+	void MoveBase::LoadEffectData(JsonObject* effectData) {
+		// Load primary effects.
+		mPrimaryEffect = MoveEffectFactory::LoadMoveEffect(effectData);
+
+		// Load secondary effects.
+		if (effectData->nodeExists("secondary")) {
+			if (!effectData->lookupNode("secondary")->isNull) {
+				mSecondaryEffects.push_back(MoveEffectFactory::LoadMoveEffect(
+						effectData->lookupNode("secondary")->objectValue));
+			}
+		}
+		else if (effectData->nodeExists("secondaries")) {
+			JsonArray* secondaryEffects = effectData->lookupNode("secondaries")->arrayValue;
+
+			for (int i = 0; i < secondaryEffects->size(); i++) {
+				mSecondaryEffects.push_back(MoveEffectFactory::
+					LoadMoveEffect(secondaryEffects->get(i)->objectValue));
+			}
+		}
+	}
+
+	std::shared_ptr<MoveEffectBase> MoveEffectFactory::
+		LoadMoveEffect(JsonObject* effectRoot) 
+	{
+		int chance = 100;
+		if (effectRoot->nodeExists("chance")) {
+			chance = effectRoot->lookupNode("chance")->numberValue;
+		}
+
+		bool targetSelf = false;
+		if (effectRoot->nodeExists("self")) {
+			targetSelf = true;
+			effectRoot = effectRoot->lookupNode("self")->objectValue;
+		}
+
+		// Figure out what type of effect we are dealing with, and add it.
+		if (effectRoot->nodeExists("status")) {
+			std::string status = effectRoot->lookupNode("status")->stringValue;
+			return std::make_shared<StatusMoveEffect>(targetSelf, chance, status);
+		}
+		else if (effectRoot->nodeExists("boosts")) {
+			JsonObject* boostObject = effectRoot->lookupNode("boosts")->objectValue;
+
+			int atkBoost, spaBoost, defBoost, spdBoost, speBoost;
+			atkBoost = spaBoost = defBoost = spdBoost = speBoost = 0;
+
+			if (boostObject->nodeExists("atk")) {
+				atkBoost = boostObject->lookupNode("atk")->numberValue;
+			}
+
+			if (boostObject->nodeExists("spa")) {
+				spaBoost = boostObject->lookupNode("spa")->numberValue;
+			}
+
+			if (boostObject->nodeExists("def")) {
+				defBoost = boostObject->lookupNode("def")->numberValue;
+			}
+
+			if (boostObject->nodeExists("spd")) {
+				spdBoost = boostObject->lookupNode("spd")->numberValue;
+			}
+
+			if (boostObject->nodeExists("spe")) {
+				speBoost = boostObject->lookupNode("spe")->numberValue;
+			}
+
+			return std::make_shared<BoostMoveEffect>(targetSelf, chance,
+				atkBoost, spaBoost, defBoost, spdBoost, speBoost);
+		}
+		else if (effectRoot->nodeExists("volatileStatus")) {
+			std::string status = effectRoot->lookupNode("volatileStatus")->stringValue;
+			return std::make_shared<VolatileStatusEffect>(targetSelf, chance, status);
+		}
+		else if (effectRoot->nodeExists("sideCondition")) {
+			std::string sideCondition = effectRoot->lookupNode("sideCondition")->stringValue;
+			return std::make_shared<SideConditionEffect>(targetSelf, chance, sideCondition);
+		}
+
+		// Otherwise, we don't have an architectype for this effect.
+		return nullptr;
 	}
 }
