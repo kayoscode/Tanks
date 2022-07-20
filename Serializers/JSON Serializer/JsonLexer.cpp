@@ -174,6 +174,14 @@ bool JsonLexer::getNextToken(JsonLexer::Token& ret) {
         ret.code = BOOL_CODE;
         ret.type = TokenType::Boolean;
     }
+    else if (memcmp(json + index, "null", 4) == 0) {
+        ret.begin = json + index;
+        index += 4;
+        ret.end = json + index;
+
+        ret.code = NULL_CODE;
+        ret.type = TokenType::Null;
+    }
     else {
         //if it's a reserve, add it, otherwise there is an error :D
         if(!loadReserve(json, index, size, &ret)) {

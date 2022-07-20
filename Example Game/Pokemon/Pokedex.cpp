@@ -1,4 +1,5 @@
 #include "Pokedex.h"
+#include "Logger/StaticLogger.h"
 
 constexpr int Generation = 8;
 
@@ -149,6 +150,8 @@ namespace Pkmn {
 					case 'T':
 						// Tutor moves also don't have an impact on this game since I make my own move tutors.
 					case 'S':
+						// TBH, I have no clue what R means, but ok - it's not used much.
+					case 'R':
 						// S means event move. For our purposes, event moves do not matter either.
 						break;
 					case 'M':
@@ -168,7 +171,8 @@ namespace Pkmn {
 						}
 						break;
 					default: 
-						std::cout << "Undefined move type: " << data.Name << ": " << moveType << " " << moves.first << "\n";
+						StaticLogger::instance.warning("Undefined move type: {s}: '{c}' {s}",
+							data.Name.c_str(), moveType, moves.first.c_str());
 						break;
 					}
 				}
@@ -213,7 +217,6 @@ namespace Pkmn {
 			pokedex[pkmn.first] = pkmnData;
 		}
 
-		auto t = pokedex["magmortar"];
 		return pokedex;
 	}
 }

@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "Natures.h"
 #include "Pokedex.h"
+#include "BaseMove.h"
 
 #include <time.h>
 #include <map>
@@ -32,6 +33,7 @@ namespace Pkmn {
 			mTypes = TypeLoader::LoadTypes("./res/data/TypeChart.json");
 			mNatures = NatureLoader::LoadNatures("./res/data/Natures.json");
 			mPokemonData = PokedexLoader::LoadPokedex("./res/data/Pokedex.json");
+			mMoveData = MoveLoader::LoadMoves("./res/data/Moves.json");
 		}
 
 		/// <summary>
@@ -63,6 +65,7 @@ namespace Pkmn {
 		std::map<std::string, Type, CompareCaseIns> mTypes;
 		std::map<std::string, Nature, CompareCaseIns> mNatures;
 		std::map<std::string, PokemonData, CompareCaseIns> mPokemonData;
+		std::map<std::string, std::shared_ptr<MoveBase>> mMoveData;
 	};
 
 	class BattleSimSingleBattle : public BattleSimBase {

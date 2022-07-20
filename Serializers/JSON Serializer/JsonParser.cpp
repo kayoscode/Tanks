@@ -49,22 +49,16 @@ static void loadJsonValue(JsonLexer& lexer, JsonLexer::Token* token, JsonValue* 
         lexer.getNextToken(*token);
         return;
     }
+    else if (token->type == JsonLexer::TokenType::Null) {
+
+		newValue->updateValue(false, true);
+        lexer.getNextToken(*token);
+        return;
+    }
     else if(token->type == JsonLexer::TokenType::String) {
         std::string value(token->begin, token->end);
 
-        if(value == "true") {
-            newValue->updateValue(true, false);
-        }
-        else if(value == "false") {
-            newValue->updateValue(false, false);
-        }
-        else if(value == "null") {
-            newValue->updateValue(false, true);
-        }
-        else {
-            newValue->updateValue(value);
-        }
-
+		newValue->updateValue(value);
         lexer.getNextToken(*token);
         return;
     }
